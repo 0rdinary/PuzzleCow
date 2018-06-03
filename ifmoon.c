@@ -6,11 +6,18 @@
 
 int marble_exist[13][13] = { 0 };
 
+int stack[500][500];
+
+void pop(int* x, int* y)
 typedef struct marble {
 	int x;
 	int y;
 	int color;
 }marble;
+
+int blow(int x, int y){
+    return 0;
+}
 
 int main(void) {
 	int xtemp, ytemp, i, j;
@@ -25,10 +32,13 @@ int main(void) {
 					if (xtemp + now.x > 12 || xtemp + now.x < 0) {  //if x is out
 						now.x = -now.x;
 					}
-					else if (ytemp + now.y <= 0) {  //if y arrived ceiling
+					else if (ytemp + now.y < 0) {  //if y arrived ceiling
 						marble_exist[0][xtemp] = now.color;
 						break;
 					}
+                    else if(ytemp == 0){
+                        marble_exist[ytemp][xtemp] = now.color;
+                    }
 					else if (marble_exist[ytemp + now.y][xtemp + now.x] != 0) {
 						if (xtemp == 6 && ytemp == 12) {
 							printf("You lose");
