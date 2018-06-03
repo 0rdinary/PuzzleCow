@@ -1,13 +1,6 @@
 #include <stdio.h>
 #include <curses.h>
-
-#define WORD_SIZE  31
-#define CIR_MAX    21
-
-#define BACK_FAIR  1
-#define FONT_FAIR  2
-#define FBACK_FAIR 3
-#define BOX_FAIR   4
+#include "library.h"
 
 // make 
 void makeCircle(char Circle[][CIR_MAX], int radius)
@@ -43,4 +36,17 @@ void printCircle(char Circle[][CIR_MAX], int x, int y)
         }
      }
      refresh();
+}
+
+void deleteCircle(int x, int y)
+{
+    int i;
+
+    attron(COLOR_PAIR(BACK_FAIR));
+    for (i = 0; i < CIR_SIZE*2; i++)
+    {
+        mvhline(y + i, x , ' ', CIR_SIZE*2);
+    }
+    attroff(COLOR_PAIR(BACK_FAIR));
+    refresh();
 }
