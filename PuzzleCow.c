@@ -21,7 +21,7 @@ int main()
     initscr();
     mainMenu();
 
-    shoot(45);
+    stage1();
 
     endwin();
     return 0;
@@ -30,6 +30,7 @@ int main()
 void mainMenu()
 {
     int i , j;
+    int pid;
     int ch;
     char string[20];
     char Circle[CIR_MAX][CIR_MAX] = {0, };
@@ -109,6 +110,13 @@ void mainMenu()
                                      {"  11101110  "},
                                      {"   00  00   "} };
 
+   /* pid = fork();
+    if (pid == 0)
+    {
+        system("afplay sound.mp3");
+    }
+    else
+    {*/
     // initialize curses and settings
     keypad(stdscr, TRUE);   // to use arrow key
     clear();
@@ -118,6 +126,10 @@ void mainMenu()
     init_pair(FONT_FAIR, COLOR_BLACK, COLOR_GREEN);
     init_pair(FBACK_FAIR, COLOR_BLACK, COLOR_WHITE);
     init_pair(BOX_FAIR, COLOR_BLACK, COLOR_YELLOW);
+    init_pair(BALL1, COLOR_RED, COLOR_RED);
+    init_pair(BALL2, COLOR_YELLOW, COLOR_YELLOW);
+    init_pair(BALL3, COLOR_BLUE, COLOR_BLUE);
+    init_pair(BALL4, COLOR_GREEN, COLOR_GREEN);
 
 
     // print Box
@@ -138,6 +150,7 @@ void mainMenu()
 
     // wait for user`s input
     getchar();
+   // }
 }
 
 void printAlphabet(char alphabet[][WORD_SIZE], int x, int y)
