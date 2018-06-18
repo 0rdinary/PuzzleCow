@@ -14,6 +14,10 @@
 #include <time.h>
 #include <sys/types.h>
 
+int bestStage = 1;
+int bestScore = 0;
+int score = 0;
+
 typedef struct location {
 	int x;
 	int y;
@@ -90,7 +94,6 @@ char number0[7][5] = { {"01110"},
 					   {"10001"},
 					   {"01110"} };
 
-int score = 0;
 
 void printStageBorder()
 {
@@ -155,7 +158,9 @@ void initStage(char circle[][CIR_MAX], char map[][15])
 void stage1()
 {
 	int tab = 3;
+	FILE *fp;
 	int input;
+	int buffer[2];
 	int xPower = 0;
 	int pid;
 	char ch;
@@ -181,7 +186,17 @@ void stage1()
         system("afplay Music.mp3");
     }
 	else 
-	  {
+	 {
+		// read best
+		fp = fopen("best.bin", "rb");
+		if (fp != NULL)
+		{
+			fread(buffer, sizeof(int), 2, fp);
+			bestStage = buffer[0];
+			bestScore = buffer[1];
+			fclose(fp);
+		}
+
 		makeCircle(circle, CIR_SIZE);
 		clear();
 
@@ -218,10 +233,16 @@ void stage1()
 
 			if (isOver(stage))
 			{
-				kill(pid, SIGINT);
+				kill(pid, SIGKILL);
 				system("say Game Over!");
 
 				ch = getchar();
+
+				fp = fopen("best.bin", "wb");
+				buffer[0] = bestStage;
+				buffer[1] = bestScore;
+				fwrite(buffer, sizeof(int), 2, fp);
+				fclose(fp);
 
 				break;
 			}
@@ -487,6 +508,8 @@ void search(char map[][15], int xBall, int yBall, char ball)
 	int temp;
 	char ch;
 	char buffer[10] = {0, };
+	char buffer1[10] = {0, };
+	char buffer2[10] = {0, };
 	location list[20];
 	location cur;
 	location same[20];
@@ -646,14 +669,18 @@ void search(char map[][15], int xBall, int yBall, char ball)
 		
 
 		sprintf(buffer, "%d", score);
+		if (score > bestScore)
+			bestScore = score;
 
 		for (i = 0; i < 7; i++)
 		{
 			attron(COLOR_PAIR(BACK_FAIR));
 			mvhline(i, 0, ' ', 20);
+			mvhline(LINES-7+i, 0, ' ', 25);
 			attroff(COLOR_PAIR(BACK_FAIR));
 		}
 
+		// print Score
 		for (i = 0; buffer[i] != '\0'; i++)
 		{
 			switch(buffer[i] - '0')
@@ -677,6 +704,64 @@ void search(char map[][15], int xBall, int yBall, char ball)
 				case 8 : printScore(number8, 6*i, 0);
 						break;
 				case 9 : printScore(number9, 6*i, 0);
+						break;
+			}
+		}
+
+		// print bestStage
+		sprintf(buffer1, "%d", bestStage);
+		for (i = 0; buffer1[i] != '\0'; i++)
+		{
+			switch(buffer1[i] - '0')
+			{
+				case 0 : printScore(number0, 0, LINES-7);
+						break;
+				case 1 : printScore(number1, 0, LINES-7);
+						break;
+				case 2 : printScore(number2, 0, LINES-7);
+						break;
+				case 3 : printScore(number3, 0, LINES-7);
+						break;
+				case 4 : printScore(number4, 0, LINES-7);
+						break;
+				case 5 : printScore(number5, 0, LINES-7);
+						break;
+				case 6 : printScore(number6, 0, LINES-7);
+						break;
+				case 7 : printScore(number7, 0, LINES-7);
+						break;
+				case 8 : printScore(number8, 0, LINES-7);
+						break;
+				case 9 : printScore(number9, 0, LINES-7);
+						break;
+			}
+		}
+
+		// print bsetScore
+		sprintf(buffer2, "%d", bestScore);
+		for (i = 0; buffer2[i] != '\0'; i++)
+		{
+			switch(buffer2[i] - '0')
+			{
+				case 0 : printScore(number0, 10 + i * 6, LINES-7);
+						break;
+				case 1 : printScore(number1, 10 + i * 6, LINES-7);
+						break;
+				case 2 : printScore(number2, 10 + i * 6, LINES-7);
+						break;
+				case 3 : printScore(number3, 10 + i * 6, LINES-7);
+						break;
+				case 4 : printScore(number4, 10 + i * 6, LINES-7);
+						break;
+				case 5 : printScore(number5, 10 + i * 6, LINES-7);
+						break;
+				case 6 : printScore(number6, 10 + i * 6, LINES-7);
+						break;
+				case 7 : printScore(number7, 10 + i * 6, LINES-7);
+						break;
+				case 8 : printScore(number8, 10 + i * 6, LINES-7);
+						break;
+				case 9 : printScore(number9, 10 + i * 6, LINES-7);
 						break;
 			}
 		}
