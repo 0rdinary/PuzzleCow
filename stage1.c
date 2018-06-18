@@ -19,6 +19,79 @@ typedef struct location {
 	int y;
 } location;
 
+char number1[7][5] = { {"00100"},
+					   {"01100"},
+					   {"00100"},
+					   {"00100"},
+					   {"00100"},
+				       {"00100"},
+				 	   {"11111"} };
+char number2[7][5] = { {"01110"},
+					   {"10001"},
+					   {"00001"},
+					   {"00010"},
+					   {"00100"},
+					   {"01000"},
+					   {"11111"} };
+char number3[7][5] = { {"11111"},
+					   {"00010"},
+					   {"00100"},
+					   {"00010"},
+					   {"00001"},
+					   {"10001"},
+					   {"01110"} };
+char number4[7][5] = { {"00010"},
+					   {"00110"},
+					   {"01010"},
+					   {"10010"},
+					   {"11111"},
+					   {"00010"},
+					   {"00010"} };
+char number5[7][5] = { {"11111"},
+					   {"10000"},
+					   {"11110"},
+					   {"00001"},
+					   {"00001"},
+					   {"10001"},
+					   {"01110"} };
+char number6[7][5] = { {"00110"},
+					   {"01000"},
+					   {"10000"},
+					   {"11110"},
+					   {"10001"},
+					   {"10001"},
+					   {"01110"} };
+char number7[7][5] = { {"11111"},
+					   {"00001"},
+					   {"00010"},
+					   {"00100"},
+					   {"00100"},
+					   {"00100"},
+					   {"00100"} };
+char number8[7][5] = { {"01110"},
+					   {"10001"},
+					   {"10001"},
+					   {"01110"},
+					   {"10001"},
+					   {"10001"},
+					   {"01110"} };
+char number9[7][5] = { {"01110"},
+					   {"10001"},
+					   {"10001"},
+					   {"01111"},
+					   {"00001"},
+					   {"00010"},
+					   {"01100"} };
+char number0[7][5] = { {"01110"},
+					   {"10001"},
+					   {"10011"},
+					   {"10101"},
+					   {"11001"},
+					   {"10001"},
+					   {"01110"} };
+
+int score = 0;
+
 void printStageBorder()
 {
 	int y;
@@ -39,6 +112,23 @@ void printStageBorder()
     }
     attroff(COLOR_PAIR(FBACK_FAIR));
     refresh();
+}
+
+void printScore(char number[][5], int x, int y)
+{
+	int i, j;
+
+	for (i = 0; i < 7; i++)
+		for (j = 0; j < 5; j++)
+			if (number[i][j] != '0')
+			{
+				attron(COLOR_PAIR(FBACK_FAIR));
+				mvhline(y + i, x + j, ' ', 1);
+				attroff(COLOR_PAIR(FBACK_FAIR));
+			}
+     
+
+     refresh();
 }
 
 void initStage(char circle[][CIR_MAX], char map[][15])
@@ -82,7 +172,7 @@ void stage1()
 						      {"000000000000000"},
 						      {"000000000000000"},
 						      {"000000000000000"},
-						      {"000000050000000"} };
+						      {"000000000000000"} };
 
 	char circle[CIR_MAX][CIR_MAX];
 
@@ -98,6 +188,7 @@ void stage1()
 		printStageBorder();
 		stage[startY][startX] = rand()%4 + '5';
 		initStage(circle, stage);
+		printScore(number0, 0, 0);
 
 		// loop shoot
 
@@ -393,7 +484,9 @@ void search(char map[][15], int xBall, int yBall, char ball)
 	int i, j;
 	int count = 1;
 	int check;
+	int temp;
 	char ch;
+	char buffer[10] = {0, };
 	location list[20];
 	location cur;
 	location same[20];
@@ -516,6 +609,8 @@ void search(char map[][15], int xBall, int yBall, char ball)
 				deleteCircle(COLS/2 - CIR_SIZE * 8 + tempX/2 * CIR_SIZE * 2, tempY * CIR_SIZE * 2);
 			else
 				deleteCircle(COLS/2 - CIR_SIZE * 7 + tempX/2 * CIR_SIZE * 2, tempY * CIR_SIZE * 2);
+
+			score++;
 		}
 
 		for (i = 1; i < 12; i++)
@@ -540,10 +635,52 @@ void search(char map[][15], int xBall, int yBall, char ball)
 
 						if (i%2 == 0)
 							deleteCircle(COLS/2 - CIR_SIZE * 8 + j/2 * CIR_SIZE * 2, i * CIR_SIZE * 2);
+						
 						else
 							deleteCircle(COLS/2 - CIR_SIZE * 7 + j/2 * CIR_SIZE * 2, i * CIR_SIZE * 2);
+						
+						score++;
 					}
 				}
 			}
+		
+
+		sprintf(buffer, "%d", score);
+
+		for (i = 0; i < 7; i++)
+		{
+			attron(COLOR_PAIR(BACK_FAIR));
+			mvhline(i, 0, ' ', 20);
+			attroff(COLOR_PAIR(BACK_FAIR));
+		}
+
+		for (i = 0; buffer[i] != '\0'; i++)
+		{
+			switch(buffer[i] - '0')
+			{
+				case 0 : printScore(number0, 6*i, 0);
+						break;
+				case 1 : printScore(number1, 6*i, 0);
+						break;
+				case 2 : printScore(number2, 6*i, 0);
+						break;
+				case 3 : printScore(number3, 6*i, 0);
+						break;
+				case 4 : printScore(number4, 6*i, 0);
+						break;
+				case 5 : printScore(number5, 6*i, 0);
+						break;
+				case 6 : printScore(number6, 6*i, 0);
+						break;
+				case 7 : printScore(number7, 6*i, 0);
+						break;
+				case 8 : printScore(number8, 6*i, 0);
+						break;
+				case 9 : printScore(number9, 6*i, 0);
+						break;
+			}
+		}
+
 	}
+	
 }

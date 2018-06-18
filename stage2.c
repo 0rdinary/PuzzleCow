@@ -8,6 +8,9 @@
 #include <time.h>
 #include <sys/types.h>
 
+extern char number0[7][5];
+extern int score;
+
 void stage2()
 {
 	int tab = 3;
@@ -28,17 +31,17 @@ void stage2()
 						      {"000000000000000"},
 						      {"000000000000000"},
 						      {"000000000000000"},
-						      {"000000050000000"} };
+						      {"000000000000000"} };
 
 	char circle[CIR_MAX][CIR_MAX];
 
-		sleep(2);
 		makeCircle(circle, CIR_SIZE);
 		clear();
 
 		printStageBorder();
 		stage[startY][startX] = rand()%4 + '5';
 		initStage(circle, stage);
+		printScore(number0, 0, 0);
 
 		// loop shoot
 
@@ -66,8 +69,6 @@ void stage2()
 			}
 			shoot(xPower, circle, stage, &tab);
 
-
-
 			if (isOver(stage))
 			{
 				system("say Game Over!");
@@ -80,7 +81,8 @@ void stage2()
 
 		if (isEnd(stage))
 		{
-			system("say You did it!");
+			system("say You Did it");
+
 			stage2();
 		}
 	
