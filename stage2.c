@@ -41,7 +41,6 @@ void stage2()
 		printStageBorder();
 		stage[startY][startX] = rand()%4 + '5';
 		initStage(circle, stage);
-		printScore(number0, 0, 0);
 
 		// loop shoot
 
