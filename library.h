@@ -28,3 +28,5 @@ int isAttached(char map[][15], int x, int y);
 int isOver(char map[][15]);
 void search(char map[][15], int xBall, int yBall, char ball);
 void stage2();
+void printScore(char number[][5], int x, int y);
+char* itoa(int val, char * buf, int radix);
