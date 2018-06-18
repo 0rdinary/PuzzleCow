@@ -14,8 +14,6 @@
 #include <time.h>
 #include <sys/types.h>
 
-extern int musicPid;
-
 typedef struct location {
 	int x;
 	int y;
@@ -28,9 +26,7 @@ void printStageBorder()
     attron(COLOR_PAIR(FBACK_FAIR));
     for (y = 0; y <= LINES; y++) {
     
-        if (y == LINES || y == 0)
-            mvhline(y, COLS/2 - CIR_SIZE * 8 - 2, ' ', CIR_SIZE*16+4);
-        else if (y == CIR_SIZE * 22)
+        if (y == CIR_SIZE * 22)
         {
         	mvhline(y, COLS/2 - CIR_SIZE * 8 - 2, ' ', 6);
         	mvhline(y, COLS/2 + CIR_SIZE * 8 - 4, ' ', 6);
@@ -92,8 +88,7 @@ void stage1()
 
 	if ( (pid = fork()) == 0 )
 	{
-        while (true)
-             system("afplay Music.mp3");
+        system("afplay Music.mp3");
     }
 	else 
 	  {
@@ -108,7 +103,7 @@ void stage1()
 
 		srand(time(NULL));
 
-		while (!isOver(stage))
+		while (!isEnd(stage))
 		{
 			xPower = 0;
 			printPower(xPower);
@@ -130,14 +125,22 @@ void stage1()
 			}
 			shoot(xPower, circle, stage, &tab);
 
+			if (isOver(stage))
+			{
+				kill(pid, SIGINT);
+				system("say Game Over!");
+
+				ch = getchar();
+
+				break;
+			}
 		}
 
-		if (isOver(stage))
+		if (isEnd(stage))
 		{
-			kill(pid, SIGINT);
-			system("say Game Over!");
+			system("say Clear!");
 
-			ch = getchar();
+			stage2();
 		}
 	}
 }
@@ -266,15 +269,13 @@ void shoot(int x, char circle[][CIR_MAX], char map[][15], int *tab)
 	search(map, curX, curY, ball);
 }
 
-int isEnd(char map[][15], int tab)
+int isEnd(char map[][15])
 {
 	int res = 1;
 
-	if (tab > 10)
-		return 0;
 
 	for (int i = 0; i < 15; i+=2)
-		if (map[0][i] == '0')
+		if (map[0][i] != '0')
 			res = 0;
 
 	return res;
