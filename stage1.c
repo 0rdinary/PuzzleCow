@@ -9,8 +9,17 @@
 #include <stdlib.h>
 #include <curses.h>
 #include <unistd.h>
+#include <signal.h>
 #include <math.h>
 #include <time.h>
+#include <sys/types.h>
+
+extern int musicPid;
+
+typedef struct location {
+	int x;
+	int y;
+} location;
 
 void printStageBorder()
 {
@@ -62,6 +71,7 @@ void stage1()
 	int tab = 3;
 	int input;
 	int xPower = 0;
+	int pid;
 	char ch;
 	char startX = 7;
 	char startY = 11;
@@ -79,41 +89,57 @@ void stage1()
 						      {"000000050000000"} };
 
 	char circle[CIR_MAX][CIR_MAX];
-	makeCircle(circle, CIR_SIZE);
-	clear();
 
-	printStageBorder();
-	stage[startY][startX] = rand()%4 + '5';
-	initStage(circle, stage);
-
-	// loop shoot
-
-	srand(time(NULL));
-
-	while (isEnd(stage, tab))
+	if ( (pid = fork()) == 0 )
 	{
-		xPower = 0;
-		printPower(xPower);
+        while (true)
+             system("afplay Music.mp3");
+    }
+	else 
+	  {
+		makeCircle(circle, CIR_SIZE);
+		clear();
 
+		printStageBorder();
 		stage[startY][startX] = rand()%4 + '5';
-		printCircle(circle, COLS/2 - CIR_SIZE * 8 + CIR_SIZE + startX/2 *CIR_SIZE*2, startY * CIR_SIZE * 2, stage[startY][startX] - '0');
+		initStage(circle, stage);
 
-		// choose power
-		input = getch();
-		while (input != KEY_UP)
+		// loop shoot
+
+		srand(time(NULL));
+
+		while (!isOver(stage))
 		{
-			if (input == KEY_RIGHT && xPower < 4)
-				xPower++;
-			else if (input == KEY_LEFT && xPower > -4)
-				xPower--;
+			xPower = 0;
 			printPower(xPower);
 
+			stage[startY][startX] = rand()%4 + '5';
+			printCircle(circle, COLS/2 - CIR_SIZE * 8 + CIR_SIZE + startX/2 *CIR_SIZE*2, startY * CIR_SIZE * 2, stage[startY][startX] - '0');
+
+			// choose power
 			input = getch();
+			while (input != KEY_UP)
+			{
+				if (input == KEY_RIGHT && xPower < 4)
+					xPower++;
+				else if (input == KEY_LEFT && xPower > -4)
+					xPower--;
+				printPower(xPower);
+
+				input = getch();
+			}
+			shoot(xPower, circle, stage, &tab);
+
 		}
-		shoot(xPower, circle, stage, &tab);
 
+		if (isOver(stage))
+		{
+			kill(pid, SIGINT);
+			system("say Game Over!");
+
+			ch = getchar();
+		}
 	}
-
 }
 
 void shoot(int x, char circle[][CIR_MAX], char map[][15], int *tab)
@@ -134,7 +160,7 @@ void shoot(int x, char circle[][CIR_MAX], char map[][15], int *tab)
 		dir = -1;
 
 	deleteCircle(COLS/2 - CIR_SIZE * 8 + CIR_SIZE + curX/2 *CIR_SIZE*2, curY * CIR_SIZE * 2);
-	while (!isOver(map))
+	while (true)
 	{
 
 		// remove previous ball
@@ -161,7 +187,7 @@ void shoot(int x, char circle[][CIR_MAX], char map[][15], int *tab)
 			else
 				printCircle(circle, COLS/2 - CIR_SIZE * 7 + curX/2 * CIR_SIZE * 2, (curY-1) * CIR_SIZE * 2, ball-'0');
 
-			usleep(200000);
+			usleep(100000);
 			count++;
 
 		}
@@ -198,7 +224,7 @@ void shoot(int x, char circle[][CIR_MAX], char map[][15], int *tab)
 				else
 					printCircle(circle, COLS/2 - CIR_SIZE * 7 + curX/2 * CIR_SIZE * 2, curY * CIR_SIZE * 2 - 2*CIR_SIZE*((float)i/distance), ball-'0');
 
-				usleep(200000);
+				usleep(100000);
 
 				if (i != distance)
 				{
@@ -236,6 +262,8 @@ void shoot(int x, char circle[][CIR_MAX], char map[][15], int *tab)
 		else
 			printCircle(circle, COLS/2 - CIR_SIZE * 7 + curX/2 * CIR_SIZE * 2, curY * CIR_SIZE * 2, ball-'0');
 	}
+
+	search(map, curX, curY, ball);
 }
 
 int isEnd(char map[][15], int tab)
@@ -287,7 +315,10 @@ int isAttached(char map[][15], int x, int y)
 {
 	int res = 0;
 
-	if (x >= 2 && x <= 12)
+
+	if (y == 0 && x%2 == 0)
+		res = 1;
+	else if (x >= 2 && x <= 12)
 	{
 		if (y > 0) {
 			if (map[y-1][x-1] != '0' || map[y-1][x+1] != '0')
@@ -354,4 +385,164 @@ int isOver(char map[][15])
 		res = 1;
 
 	return res;
+}
+
+void search(char map[][15], int xBall, int yBall, char ball)
+{
+	int i, j;
+	int count = 1;
+	int check;
+	char ch;
+	location list[20];
+	location cur;
+	location same[20];
+	int usedIdx = 1;
+	int tempX, tempY;
+
+	list[0].x = xBall;
+	list[0].y = yBall;
+	same[0].x = xBall;
+	same[0].y = yBall;
+
+	while (usedIdx > 0)
+	{
+		usedIdx--;
+
+		cur = list[usedIdx];
+
+		if (cur.y > 0 && cur.x > 0 && map[cur.y-1][cur.x-1] == ball)
+		{
+			check = 1;
+			for (i = 0; i <= count; i++)
+				if (same[i].x == cur.x-1 && same[i].y == cur.y-1)
+					check = 0;
+
+			if (check == 1)
+			{
+				list[usedIdx].x = cur.x-1;
+				list[usedIdx++].y = cur.y-1;
+				same[count].x = cur.x-1;
+				same[count++].y = cur.y-1;
+			}
+		}
+		if (cur.y > 0 && cur.x < 14 && map[cur.y-1][cur.x+1] == ball)
+		{
+			check = 1;
+			for (i = 0; i <= count; i++)
+				if (same[i].x == cur.x+1 && same[i].y == cur.y-1)
+					check = 0;
+
+			if (check == 1)
+			{
+				list[usedIdx].x = cur.x+1;
+				list[usedIdx++].y = cur.y-1;
+				same[count].x = cur.x+1;
+				same[count++].y = cur.y-1;
+			}
+		}
+		if (cur.x > 1 && map[cur.y][cur.x-2] == ball)
+		{
+			check = 1;
+			for (i = 0; i <= count; i++)
+				if (same[i].x == cur.x-2 && same[i].y == cur.y)
+					check = 0;
+
+			if (check == 1)
+			{
+				list[usedIdx].x = cur.x-2;
+				list[usedIdx++].y = cur.y;
+				same[count].x = cur.x-2;
+				same[count++].y = cur.y;
+			}
+		}
+		if (cur.x < 13 && map[cur.y][cur.x+2] == ball)
+		{
+			check = 1;
+			for (i = 0; i <= count; i++)
+				if (same[i].x == cur.x+2 && same[i].y == cur.y)
+					check = 0;
+
+			if (check == 1)
+			{
+				list[usedIdx].x = cur.x+2;
+				list[usedIdx++].y = cur.y;
+				same[count].x = cur.x+2;
+				same[count++].y = cur.y;
+			}
+		}
+		if (cur.y < 10 && cur.x > 0 && map[cur.y+1][cur.x-1] == ball)
+		{
+			check = 1;
+			for (i = 0; i <= count; i++)
+				if (same[i].x == cur.x-1 && same[i].y == cur.y+1)
+					check = 0;
+
+			if (check == 1)
+			{
+				list[usedIdx].x = cur.x-1;
+				list[usedIdx++].y = cur.y+1;
+				same[count].x = cur.x-1;
+				same[count++].y = cur.y+1;
+			}
+		}
+		if (cur.y < 10 && cur.x < 14 && map[cur.y+1][cur.x+1] == ball)
+		{
+			check = 1;
+			for (i = 0; i <= count; i++)
+				if (same[i].x == cur.x+1 && same[i].y == cur.y+1)
+					check = 0;
+
+			if (check == 1)
+			{
+				list[usedIdx].x = cur.x+1;
+				list[usedIdx++].y = cur.y+1;
+				same[count].x = cur.x+1;
+				same[count++].y = cur.y+1;
+			}
+		}
+	}
+
+	if (count >= 3)
+	{
+		for (i = 0; i < count; i++)
+		{
+			tempX = same[i].x;
+			tempY = same[i].y;
+
+			map[tempY][tempX] = '0';
+
+			if (tempY%2 == 0)
+				deleteCircle(COLS/2 - CIR_SIZE * 8 + tempX/2 * CIR_SIZE * 2, tempY * CIR_SIZE * 2);
+			else
+				deleteCircle(COLS/2 - CIR_SIZE * 7 + tempX/2 * CIR_SIZE * 2, tempY * CIR_SIZE * 2);
+		}
+
+		for (i = 1; i < 12; i++)
+			for (j = 0; j < 15; j++)
+			{
+				if (map[i][j] != '0')
+				{
+					check = 0;
+
+					if (i > 0 && j > 0 && map[i-1][j-1] != '0')
+						check = 1;
+					if (i > 0 && j < 14 && map[i-1][j+1] != '0')
+						check = 1;
+					if (j > 1 && map[i][j-2] != '0')
+						check = 1;
+					if (i < 13 && map[i][j+2] != '0')
+						check = 1;
+
+					if (check == 0)
+					{
+						map[i][j] = '0';
+
+						if (i%2 == 0)
+							deleteCircle(COLS/2 - CIR_SIZE * 8 + j/2 * CIR_SIZE * 2, i * CIR_SIZE * 2);
+						else
+							deleteCircle(COLS/2 - CIR_SIZE * 7 + j/2 * CIR_SIZE * 2, i * CIR_SIZE * 2);
+					}
+				}
+			}
+	}
 }

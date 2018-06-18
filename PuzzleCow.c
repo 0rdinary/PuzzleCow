@@ -30,7 +30,6 @@ int main()
 void mainMenu()
 {
     int i , j;
-    int pid;
     int ch;
     char string[20];
     char Circle[CIR_MAX][CIR_MAX] = {0, };
@@ -110,47 +109,41 @@ void mainMenu()
                                      {"  11101110  "},
                                      {"   00  00   "} };
 
-   /* pid = fork();
-    if (pid == 0)
-    {
-        system("afplay sound.mp3");
-    }
-    else
-    {*/
-    // initialize curses and settings
-    keypad(stdscr, TRUE);   // to use arrow key
-    clear();
-    start_color();
-    refresh();
-    init_pair(BACK_FAIR, COLOR_BLACK, COLOR_BLACK);
-    init_pair(FONT_FAIR, COLOR_BLACK, COLOR_GREEN);
-    init_pair(FBACK_FAIR, COLOR_BLACK, COLOR_WHITE);
-    init_pair(BOX_FAIR, COLOR_BLACK, COLOR_YELLOW);
-    init_pair(BALL1, COLOR_RED, COLOR_RED);
-    init_pair(BALL2, COLOR_YELLOW, COLOR_YELLOW);
-    init_pair(BALL3, COLOR_BLUE, COLOR_BLUE);
-    init_pair(BALL4, COLOR_GREEN, COLOR_GREEN);
+    
+        // initialize curses and settings
+        keypad(stdscr, TRUE);   // to use arrow key
+        clear();
+        start_color();
+        refresh();
+        init_pair(BACK_FAIR, COLOR_BLACK, COLOR_BLACK);
+        init_pair(FONT_FAIR, COLOR_BLACK, COLOR_GREEN);
+        init_pair(FBACK_FAIR, COLOR_BLACK, COLOR_WHITE);
+        init_pair(BOX_FAIR, COLOR_BLACK, COLOR_YELLOW);
+        init_pair(BALL1, COLOR_RED, COLOR_RED);
+        init_pair(BALL2, COLOR_YELLOW, COLOR_YELLOW);
+        init_pair(BALL3, COLOR_BLUE, COLOR_BLUE);
+        init_pair(BALL4, COLOR_GREEN, COLOR_GREEN);
 
 
-    // print Box
-    printBox();
+        // print Box
+        printBox();
 
-    // print puzzle
-    printAlphabet(P, COLS/2 - 39, LINES/8);
-    printAlphabet(U, COLS/2 - 26, LINES/8 - 1);
-    printAlphabet(Z, COLS/2 - 12, LINES/8 - 2);
-    printAlphabet(Z, COLS/2 + 2,  LINES/8 - 2);
-    printAlphabet(L, COLS/2 + 16, LINES/8 - 1);
-    printAlphabet(E, COLS/2 + 30, LINES/8);
+        // print puzzle
+        printAlphabet(P, COLS/2 - 39, LINES/8);
+        printAlphabet(U, COLS/2 - 26, LINES/8 - 1);
+        printAlphabet(Z, COLS/2 - 12, LINES/8 - 2);
+        printAlphabet(Z, COLS/2 + 2,  LINES/8 - 2);
+        printAlphabet(L, COLS/2 + 16, LINES/8 - 1);
+        printAlphabet(E, COLS/2 + 30, LINES/8);
 
-    // print cow
-    printAlphabet(C, COLS/2 - 19, LINES/8 + 11);
-    printAlphabet(O, COLS/2 - 6, LINES/8 + 10);
-    printAlphabet(W, COLS/2 + 8, LINES/8 + 11);
+        // print cow
+        printAlphabet(C, COLS/2 - 19, LINES/8 + 11);
+        printAlphabet(O, COLS/2 - 6, LINES/8 + 10);
+        printAlphabet(W, COLS/2 + 8, LINES/8 + 11);
 
-    // wait for user`s input
-    getchar();
-   // }
+        // wait for user`s input
+        getchar();
+    
 }
 
 void printAlphabet(char alphabet[][WORD_SIZE], int x, int y)
