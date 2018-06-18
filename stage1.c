@@ -176,12 +176,14 @@ void stage1()
 
 	char circle[CIR_MAX][CIR_MAX];
 
+    //for play music
 	if ( (pid = fork()) == 0 )
 	{
         system("afplay Music.mp3");
     }
 	else 
 	  {
+        //initialization
 		makeCircle(circle, CIR_SIZE);
 		clear();
 

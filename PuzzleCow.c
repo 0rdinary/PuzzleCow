@@ -18,6 +18,7 @@ void printBox();
 
 int main()
 {
+    //initialization
     initscr();
     mainMenu();
 
@@ -113,8 +114,11 @@ void mainMenu()
         // initialize curses and settings
         keypad(stdscr, TRUE);   // to use arrow key
         clear();
+        //use to color_mode if return true;
         start_color();
         refresh();
+        //init_pair(a,b,c) = setting color;
+        // a = index, b = color, c = blink color
         init_pair(BACK_FAIR, COLOR_BLACK, COLOR_BLACK);
         init_pair(FONT_FAIR, COLOR_BLACK, COLOR_GREEN);
         init_pair(FBACK_FAIR, COLOR_BLACK, COLOR_WHITE);
