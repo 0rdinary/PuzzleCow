@@ -10,10 +10,14 @@
 
 extern char number0[7][5];
 extern int score;
+extern int bestScore;
+extern int bestStage;
 
 void stage2()
 {
 	int tab = 3;
+	FILE *fp;
+	int buffer[2];
 	int input;
 	int xPower = 0;
 	int pid;
@@ -41,7 +45,6 @@ void stage2()
 		printStageBorder();
 		stage[startY][startX] = rand()%4 + '5';
 		initStage(circle, stage);
-		printScore(number0, 0, 0);
 
 		// loop shoot
 
@@ -76,12 +79,24 @@ void stage2()
 				ch = getchar();
 
 				break;
+
+				fp = fopen("best.bin", "wb");
+				buffer[0] = bestStage;
+				buffer[1] = bestScore;
+				fwrite(buffer, sizeof(int), 2, fp);
+				fclose(fp);
 			}
 		}
 
 		if (isEnd(stage))
 		{
 			system("say You Did it");
+
+			fp = fopen("best.bin", "wb");
+			buffer[0] = bestStage;
+			buffer[1] = bestScore;
+			fwrite(buffer, sizeof(int), 2, fp);
+			fclose(fp);
 
 			stage2();
 		}
