@@ -187,10 +187,6 @@ void stage1()
         system("afplay Music.mp3");
     }
 	else 
-<<<<<<< HEAD
-	  {
-        //initialization
-=======
 	 {
 		// read best
 		fp = fopen("best.bin", "rb");
@@ -202,7 +198,6 @@ void stage1()
 			fclose(fp);
 		}
 
->>>>>>> master_branch
 		makeCircle(circle, CIR_SIZE);
 		clear();
 
@@ -258,7 +253,7 @@ void stage1()
 		{
 			system("say Clear!");
 
-			stage2();
+			stage3();
 		}
 	}
 }
