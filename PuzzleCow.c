@@ -175,7 +175,6 @@ void printAlphabet(char alphabet[][WORD_SIZE], int x, int y)
      }
      refresh();
 }
-<<<<<<< HEAD
 
 void printBox()
 {
@@ -199,5 +198,3 @@ void printBox()
     attroff(COLOR_PAIR(BOX_FAIR));
     refresh();
 }
-=======
->>>>>>> master_branch
