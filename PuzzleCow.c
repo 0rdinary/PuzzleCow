@@ -171,26 +171,3 @@ void printAlphabet(char alphabet[][WORD_SIZE], int x, int y)
      }
      refresh();
 }
-
-void printBox()
-{
-    /*
-     * purpose : print Box in Title
-     */
-    int y, x;
-
-    move(COLS/2 - 44, LINES/8 - 4);
-    attron(COLOR_PAIR(BOX_FAIR));
-    for (y = LINES/8 - 4; y <= LINES/8 + 21; y++) {
-    
-        if (y == LINES/8 - 4 || y == LINES/8 + 21)
-            mvhline(y, COLS/2 -44, ' ', 91);
-        else 
-        {
-            mvhline(y, COLS/2 - 44, ' ', 2);
-            mvhline(y, COLS/2 + 45, ' ', 2);
-        }
-    }
-    attroff(COLOR_PAIR(BOX_FAIR));
-    refresh();
-}
