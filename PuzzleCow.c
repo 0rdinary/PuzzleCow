@@ -1,3 +1,9 @@
+/************************************************************
+ * Filename      : PuzzleCow.c
+ * Author        : Team Hobanwoo) mwJeong
+ * Modified Date : May, 31, 2018    13:42
+ * Purpose       : Main file of game with main()
+ ************************************************************/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -7,14 +13,18 @@
 #include "library.h"
 
 void mainMenu();
-//void printBackGround();
 void printAlphabet(char alphabet[][WORD_SIZE], int x, int y);
 void printBox();
 
 int main()
 {
+    //initialization
+    initscr();
     mainMenu();
 
+    stage1();
+
+    endwin();
     return 0;
 }
 
@@ -100,57 +110,51 @@ void mainMenu()
                                      {"  11101110  "},
                                      {"   00  00   "} };
 
-    initscr();
-    keypad(stdscr, TRUE);
-    clear();
     
-    start_color();
-    refresh();
+        // initialize curses and settings
+        keypad(stdscr, TRUE);   // to use arrow key
+        clear();
+        //use to color_mode if return true;
+        start_color();
+        refresh();
+        //init_pair(a,b,c) = setting color;
+        // a = index, b = color, c = blink color
+        init_pair(BACK_FAIR, COLOR_BLACK, COLOR_BLACK);
+        init_pair(FONT_FAIR, COLOR_BLACK, COLOR_GREEN);
+        init_pair(FBACK_FAIR, COLOR_BLACK, COLOR_WHITE);
+        init_pair(BOX_FAIR, COLOR_BLACK, COLOR_YELLOW);
+        init_pair(BALL1, COLOR_RED, COLOR_RED);
+        init_pair(BALL2, COLOR_YELLOW, COLOR_YELLOW);
+        init_pair(BALL3, COLOR_BLUE, COLOR_BLUE);
+        init_pair(BALL4, COLOR_GREEN, COLOR_GREEN);
 
-    init_pair(BACK_FAIR, COLOR_BLACK, COLOR_BLACK);
-    init_pair(FONT_FAIR, COLOR_BLACK, COLOR_GREEN);
-    init_pair(FBACK_FAIR, COLOR_BLACK, COLOR_WHITE);
-    init_pair(BOX_FAIR, COLOR_BLACK, COLOR_YELLOW);
 
-    //printBackGround();
-    printBox();
+        // print Box
+        printBox();
 
-    printAlphabet(P, COLS/2 - 39, LINES/8);
-    printAlphabet(U, COLS/2 - 26, LINES/8 - 1);
-    printAlphabet(Z, COLS/2 - 12, LINES/8 - 2);
-    printAlphabet(Z, COLS/2 + 2,  LINES/8 - 2);
-    printAlphabet(L, COLS/2 + 16, LINES/8 - 1);
-    printAlphabet(E, COLS/2 + 30, LINES/8);
+        // print puzzle
+        printAlphabet(P, COLS/2 - 39, LINES/8);
+        printAlphabet(U, COLS/2 - 26, LINES/8 - 1);
+        printAlphabet(Z, COLS/2 - 12, LINES/8 - 2);
+        printAlphabet(Z, COLS/2 + 2,  LINES/8 - 2);
+        printAlphabet(L, COLS/2 + 16, LINES/8 - 1);
+        printAlphabet(E, COLS/2 + 30, LINES/8);
 
-    printAlphabet(C, COLS/2 - 19, LINES/8 + 11);
-    printAlphabet(O, COLS/2 - 6, LINES/8 + 10);
-    printAlphabet(W, COLS/2 + 8, LINES/8 + 11);
+        // print cow
+        printAlphabet(C, COLS/2 - 19, LINES/8 + 11);
+        printAlphabet(O, COLS/2 - 6, LINES/8 + 10);
+        printAlphabet(W, COLS/2 + 8, LINES/8 + 11);
 
-    getchar();
-
-    endwin();
-
-    makeCircle(Circle, 3);
-    printCircle(Circle, 0, 0);
-
+        // wait for user`s input
+        getchar();
+    
 }
-/*
-void printBackGround()
-{
-    int y = 0;
-
-    move(0, 0);
-    attron(COLOR_PAIR(BACK_FAIR));
-    addch('1');
-    for (y = 0; y < LINES; y++)
-        mvhline(y, 0 , ' ' , COLS);
-    attroff(COLOR_PAIR(BACK_FAIR));
-
-    refresh();
-}*/
 
 void printAlphabet(char alphabet[][WORD_SIZE], int x, int y)
 {
+    /*
+    * purpose : print Title`s letters
+    */
     int i, j;
 
     for (i = 0; i < alphabet[i][0] != '\0'; i++)
@@ -171,9 +175,13 @@ void printAlphabet(char alphabet[][WORD_SIZE], int x, int y)
      }
      refresh();
 }
+<<<<<<< HEAD
 
 void printBox()
 {
+    /*
+     * purpose : print Box in Title
+     */
     int y, x;
 
     move(COLS/2 - 44, LINES/8 - 4);
@@ -191,3 +199,5 @@ void printBox()
     attroff(COLOR_PAIR(BOX_FAIR));
     refresh();
 }
+=======
+>>>>>>> master_branch
