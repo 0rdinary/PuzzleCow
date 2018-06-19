@@ -181,11 +181,13 @@ void stage1()
 
 	char circle[CIR_MAX][CIR_MAX];
 
+    //for play music
 	if ( (pid = fork()) == 0 )
 	{
         system("afplay Music.mp3");
     }
 	else 
+<<<<<<< HEAD
 	 {
 		// read best
 		fp = fopen("best.bin", "rb");
@@ -197,6 +199,10 @@ void stage1()
 			fclose(fp);
 		}
 
+=======
+	  {
+        //initialization
+>>>>>>> master_branch
 		makeCircle(circle, CIR_SIZE);
 		clear();
 

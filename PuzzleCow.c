@@ -18,6 +18,7 @@ void printBox();
 
 int main()
 {
+    //initialization
     initscr();
     mainMenu();
 
@@ -113,8 +114,11 @@ void mainMenu()
         // initialize curses and settings
         keypad(stdscr, TRUE);   // to use arrow key
         clear();
+        //use to color_mode if return true;
         start_color();
         refresh();
+        //init_pair(a,b,c) = setting color;
+        // a = index, b = color, c = blink color
         init_pair(BACK_FAIR, COLOR_BLACK, COLOR_BLACK);
         init_pair(FONT_FAIR, COLOR_BLACK, COLOR_GREEN);
         init_pair(FBACK_FAIR, COLOR_BLACK, COLOR_WHITE);
@@ -171,3 +175,29 @@ void printAlphabet(char alphabet[][WORD_SIZE], int x, int y)
      }
      refresh();
 }
+<<<<<<< HEAD
+=======
+
+void printBox()
+{
+    /*
+     * purpose : print Box in Title
+     */
+    int y, x;
+
+    move(COLS/2 - 44, LINES/8 - 4);
+    attron(COLOR_PAIR(BOX_FAIR));
+    for (y = LINES/8 - 4; y <= LINES/8 + 21; y++) {
+    
+        if (y == LINES/8 - 4 || y == LINES/8 + 21)
+            mvhline(y, COLS/2 -44, ' ', 91);
+        else 
+        {
+            mvhline(y, COLS/2 - 44, ' ', 2);
+            mvhline(y, COLS/2 + 45, ' ', 2);
+        }
+    }
+    attroff(COLOR_PAIR(BOX_FAIR));
+    refresh();
+}
+>>>>>>> master_branch

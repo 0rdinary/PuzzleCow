@@ -32,15 +32,18 @@ void printCircle(char Circle[][CIR_MAX], int x, int y, int Color)
     {
         for (j = 0; Circle[i][j] != '\0'; j++)
         {
+            //print color
             if (Circle[i][j] == '1')
                 attron(COLOR_PAIR(Color));
             else if (Circle[i][j] == '0')
                 attron(COLOR_PAIR(BACK_FAIR));
             else
             {
+                //turnoff color setting
                 attroff(COLOR_PAIR(FONT_FAIR));
                 attroff(COLOR_PAIR(BACK_FAIR));
             }
+            //make a border
             mvhline(y+i, x+j, ' ', 1);
         }
      }
