@@ -188,6 +188,9 @@ void stage1()
     }
 	else 
 <<<<<<< HEAD
+	  {
+        //initialization
+=======
 	 {
 		// read best
 		fp = fopen("best.bin", "rb");
@@ -199,9 +202,6 @@ void stage1()
 			fclose(fp);
 		}
 
-=======
-	  {
-        //initialization
 >>>>>>> master_branch
 		makeCircle(circle, CIR_SIZE);
 		clear();
