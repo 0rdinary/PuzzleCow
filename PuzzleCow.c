@@ -12,17 +12,59 @@
 #include <termios.h>
 #include "library.h"
 
+int bestStage = 0;
+int bestScore = 0;
+int score = 0;
+
 void mainMenu();
 void printAlphabet(char alphabet[][WORD_SIZE], int x, int y);
 void printBox();
 
 int main()
 {
+    FILE *fp;
+    int buffer[2];    // store best Score
+
     //initialization
+    char userInput;
     initscr();
     mainMenu();
 
-    stage1();
+    // read best
+    fp = fopen("best.bin", "rb");
+    if (fp != NULL)
+    {
+        fread(buffer, sizeof(int), 2, fp);
+        bestStage = buffer[0];
+        bestScore = buffer[1];
+        fclose(fp);
+    }
+
+    fflush(stdin);
+    userInput = getchar();
+    while (userInput != 'q')
+    {
+        switch(userInput)
+        {
+            case '1' : stage1();
+                        break;
+            case '2' : stage2();
+                        break;
+            case '3' : stage3();
+                        break;
+            case '4' : stage4();
+                        break;
+        }
+
+        userInput = getchar();
+    }
+
+    // save users data
+    fp = fopen("best.bin", "wb");
+    buffer[0] = bestStage;
+    buffer[1] = bestScore;
+    fwrite(buffer, sizeof(int), 2, fp);
+    fclose(fp);
 
     endwin();
     return 0;
@@ -144,9 +186,6 @@ void mainMenu()
         printAlphabet(C, COLS/2 - 19, LINES/8 + 11);
         printAlphabet(O, COLS/2 - 6, LINES/8 + 10);
         printAlphabet(W, COLS/2 + 8, LINES/8 + 11);
-
-        // wait for user`s input
-        getchar();
     
 }
 

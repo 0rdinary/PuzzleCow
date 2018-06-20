@@ -14,9 +14,9 @@
 #include <time.h>
 #include <sys/types.h>
 
-int bestStage = 1;
-int bestScore = 0;
-int score = 0;
+extern int bestStage;
+extern int bestScore;
+extern int score;
 
 typedef struct location {
 	int x;
@@ -151,6 +151,7 @@ void initStage(char circle[][CIR_MAX], char map[][15])
 				if (map[i][j] != '0')
 					printCircle(circle, COLS/2 - CIR_SIZE * 8 + CIR_SIZE + j/2 *CIR_SIZE*2, i * CIR_SIZE * 2, map[i][j] - '0');
 			}
+
 	}
 	printPower(0);
 }
@@ -160,7 +161,6 @@ void stage1()
 	int tab = 3;
 	FILE *fp;
 	int input;
-	int buffer[2];
 	int xPower = 0;
 	int pid;
 	char ch;
@@ -181,22 +181,16 @@ void stage1()
 
 	char circle[CIR_MAX][CIR_MAX];
 
-    //for play music
+	/*
+    //for play music 
 	if ( (pid = fork()) == 0 )
 	{
         system("afplay Music.mp3");
-    }
-	else 
-	 {
-		// read best
-		fp = fopen("best.bin", "rb");
-		if (fp != NULL)
-		{
-			fread(buffer, sizeof(int), 2, fp);
-			bestStage = buffer[0];
-			bestScore = buffer[1];
-			fclose(fp);
-		}
+    }*/
+
+
+	//else 
+	 //{
 
 		makeCircle(circle, CIR_SIZE);
 		clear();
@@ -239,13 +233,7 @@ void stage1()
 
 				ch = getchar();
 
-				fp = fopen("best.bin", "wb");
-				buffer[0] = bestStage;
-				buffer[1] = bestScore;
-				fwrite(buffer, sizeof(int), 2, fp);
-				fclose(fp);
-
-				break;
+				return;
 			}
 		}
 
@@ -255,7 +243,7 @@ void stage1()
 
 			stage3();
 		}
-	}
+	//}
 }
 
 void shoot(int x, char circle[][CIR_MAX], char map[][15], int *tab)
