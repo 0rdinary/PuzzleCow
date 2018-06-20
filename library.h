@@ -30,3 +30,4 @@ void search(char map[][15], int xBall, int yBall, char ball);
 void stage2();
 void printScore(char number[][5], int x, int y);
 void stage3();
+void stage4();
