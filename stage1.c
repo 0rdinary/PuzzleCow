@@ -14,9 +14,9 @@
 #include <time.h>
 #include <sys/types.h>
 
-int bestStage = 1;
-int bestScore = 0;
-int score = 0;
+extern int bestStage;
+extern int bestScore;
+extern int score;
 
 typedef struct location {
 	int x;
@@ -94,13 +94,105 @@ char number0[7][5] = { {"01110"},
 					   {"10001"},
 					   {"01110"} };
 
+char smallP[6][5] = { {"11111"},
+				      {"10001"},
+				      {"10001"},
+				      {"11111"},
+				      {"10000"},
+				      {"10000"} };
+
+char smallU[6][5] = { {"10001"},
+				      {"10001"},
+				      {"10001"},
+				      {"10001"},
+				      {"11011"},
+				      {"01110"} };
+
+char smallZ[6][5] = { {"11111"},
+				      {"00011"},
+				      {"00110"},
+				      {"01100"},
+				      {"11000"},
+				      {"11111"} };
+
+char smallL[6][5] = { {"10000"},
+				      {"10000"},
+				      {"10000"},
+				      {"10000"},
+				      {"10000"},
+				      {"11111"} };
+
+char smallE[6][5] = { {"11111"},
+				      {"10000"},
+				      {"11110"},
+				      {"11110"},
+				      {"10000"},
+				      {"11111"} };
+
+char smallC[6][5] = { {"01111"},
+				      {"11001"},
+				      {"10000"},
+				      {"10000"},
+				      {"11001"},
+				      {"01110"} };
+
+char smallO[6][5] = { {"01110"},
+				      {"11011"},
+				      {"10001"},
+				      {"10001"},
+				      {"11011"},
+				      {"01110"} };
+
+char smallW[6][5] = { {"10001"},
+				      {"10101"},
+				      {"10101"},
+				      {"10101"},
+				      {"10101"},
+				      {"01110"} };
+
+char smallN[6][5] = { {"10001"},
+				      {"11001"},
+				      {"11101"},
+				      {"10111"},
+				      {"10011"},
+				      {"10001"} };
+
+char smallX[6][5] = { {"10001"},
+				      {"11011"},
+				      {"01110"},
+				      {"00100"},
+				      {"01010"},
+				      {"10001"} };
+
+char smallT[6][5] = { {"11111"},
+				      {"10101"},
+				      {"00100"},
+				      {"00100"},
+				      {"00100"},
+				      {"00100"} };
+
+char smallS[6][5] = { {"11111"},
+				      {"10001"},
+				      {"11100"},
+				      {"00111"},
+				      {"10001"},
+				      {"11111"} };
+
+char smallR[6][5] = { {"11111"},
+				      {"10001"},
+				      {"11111"},
+				      {"11000"},
+				      {"10110"},
+				      {"10011"} };
+
 
 void printStageBorder()
 {
 	int y;
 	move(COLS/2 - CIR_SIZE * 8 - 1, 0);
     attron(COLOR_PAIR(FBACK_FAIR));
-    for (y = 0; y <= LINES; y++) {
+    for (y = 0; y <= LINES; y++)
+    {
     
         if (y == CIR_SIZE * 22)
         {
@@ -134,9 +226,30 @@ void printScore(char number[][5], int x, int y)
      refresh();
 }
 
+void deleteScore(int x, int y)
+{
+	int i, j;
+
+	attron(COLOR_PAIR(BACK_FAIR));
+	for (int i = 0; i < 7; i++)
+		mvhline(y + i, x, ' ', 5);
+	attroff(COLOR_PAIR(BACK_FAIR));
+}
+
 void initStage(char circle[][CIR_MAX], char map[][15])
 {
 	int i, j;
+	char buffer1[10];
+	char buffer2[10];
+
+
+	// set score
+	printAlp(smallS, 0, 0);
+	printAlp(smallC, 6, 0);
+	printAlp(smallO, 12, 0);
+	printAlp(smallR, 18, 0);
+	printAlp(smallE, 24, 0);
+	printScore(number0, 31, 0);
 
 	for (i = 0; i < 12; i++) {
 		if (i%2 == 0)
@@ -151,18 +264,97 @@ void initStage(char circle[][CIR_MAX], char map[][15])
 				if (map[i][j] != '0')
 					printCircle(circle, COLS/2 - CIR_SIZE * 8 + CIR_SIZE + j/2 *CIR_SIZE*2, i * CIR_SIZE * 2, map[i][j] - '0');
 			}
+
 	}
 	printPower(0);
+
+	sprintf(buffer1, "%d", bestStage);
+		for (i = 0; buffer1[i] != '\0'; i++)
+		{
+			switch(buffer1[i] - '0')
+			{
+				case 0 : printScore(number0, 0, LINES-7);
+						break;
+				case 1 : printScore(number1, 0, LINES-7);
+						break;
+				case 2 : printScore(number2, 0, LINES-7);
+						break;
+				case 3 : printScore(number3, 0, LINES-7);
+						break;
+				case 4 : printScore(number4, 0, LINES-7);
+						break;
+				case 5 : printScore(number5, 0, LINES-7);
+						break;
+				case 6 : printScore(number6, 0, LINES-7);
+						break;
+				case 7 : printScore(number7, 0, LINES-7);
+						break;
+				case 8 : printScore(number8, 0, LINES-7);
+						break;
+				case 9 : printScore(number9, 0, LINES-7);
+						break;
+			}
+		}
+
+		// print bsetScore
+		sprintf(buffer2, "%d", bestScore);
+		for (i = 0; buffer2[i] != '\0'; i++)
+		{
+			switch(buffer2[i] - '0')
+			{
+				case 0 : printScore(number0, 10 + i * 6, LINES-7);
+						break;
+				case 1 : printScore(number1, 10 + i * 6, LINES-7);
+						break;
+				case 2 : printScore(number2, 10 + i * 6, LINES-7);
+						break;
+				case 3 : printScore(number3, 10 + i * 6, LINES-7);
+						break;
+				case 4 : printScore(number4, 10 + i * 6, LINES-7);
+						break;
+				case 5 : printScore(number5, 10 + i * 6, LINES-7);
+						break;
+				case 6 : printScore(number6, 10 + i * 6, LINES-7);
+						break;
+				case 7 : printScore(number7, 10 + i * 6, LINES-7);
+						break;
+				case 8 : printScore(number8, 10 + i * 6, LINES-7);
+						break;
+				case 9 : printScore(number9, 10 + i * 6, LINES-7);
+						break;
+			}
+		}
+
+	// print mark
+	printGreenScore(smallP, COLS-36, 0);
+	printGreenScore(smallU, COLS-30, 0);
+	printGreenScore(smallZ, COLS-24, 0);
+	printGreenScore(smallZ, COLS-18, 0);
+	printGreenScore(smallL, COLS-12, 0);
+	printGreenScore(smallE, COLS-6, 0);
+
+	printGreenScore(smallC, COLS-18, 8);
+	printGreenScore(smallO, COLS-12, 8);
+	printGreenScore(smallW, COLS-6, 8);
+
+	// print next
+	printAlp(smallN, COLS - CIR_SIZE * 3 - 24, LINES-9);
+	printAlp(smallE, COLS - CIR_SIZE * 3 - 18, LINES-9);
+	printAlp(smallX, COLS - CIR_SIZE * 3 - 12, LINES-9);
+	printAlp(smallT, COLS - CIR_SIZE * 3 - 6, LINES-9);
+
 }
 
 void stage1()
 {
 	int tab = 3;
 	FILE *fp;
+	int i;
 	int input;
-	int buffer[2];
 	int xPower = 0;
 	int pid;
+	char ballCycle[10];
+	int ballIdx = 0;
 	char ch;
 	char startX = 7;
 	char startY = 11;
@@ -181,81 +373,64 @@ void stage1()
 
 	char circle[CIR_MAX][CIR_MAX];
 
-    //for play music
-	if ( (pid = fork()) == 0 )
+
+	makeCircle(circle, CIR_SIZE);
+	clear();
+
+	printStageBorder();
+	stage[startY][startX] = rand()%4 + '5';
+	initStage(circle, stage);
+
+	// loop shoot
+
+	srand(time(NULL));
+
+	for (i = 0; i < 10; i++)
+		ballCycle[i] = rand()%4 + '5';
+
+	while (!isEnd(stage))
 	{
-        system("afplay Music.mp3");
-    }
-	else 
-	 {
-		// read best
-		fp = fopen("best.bin", "rb");
-		if (fp != NULL)
+		xPower = 0;
+		printPower(xPower);
+
+		if (ballIdx > 9)
+			ballIdx = 0;
+		stage[startY][startX] = ballCycle[ballIdx++];
+
+		// print current and next ball
+		printCircle(circle, COLS/2 - CIR_SIZE * 8 + CIR_SIZE + startX/2 *CIR_SIZE*2, startY * CIR_SIZE * 2, stage[startY][startX] - '0');
+		printCircle(circle, COLS - CIR_SIZE * 3 , LINES - CIR_SIZE * 3 , ballCycle[ballIdx] - '0');
+
+		// choose power
+		input = getch();
+		while (input != KEY_UP)
 		{
-			fread(buffer, sizeof(int), 2, fp);
-			bestStage = buffer[0];
-			bestScore = buffer[1];
-			fclose(fp);
-		}
-
-		makeCircle(circle, CIR_SIZE);
-		clear();
-
-		printStageBorder();
-		stage[startY][startX] = rand()%4 + '5';
-		initStage(circle, stage);
-		printScore(number0, 0, 0);
-
-		// loop shoot
-
-		srand(time(NULL));
-
-		while (!isEnd(stage))
-		{
-			xPower = 0;
+			if (input == KEY_RIGHT && xPower < 4)
+				xPower++;
+			else if (input == KEY_LEFT && xPower > -4)
+				xPower--;
 			printPower(xPower);
 
-			stage[startY][startX] = rand()%4 + '5';
-			printCircle(circle, COLS/2 - CIR_SIZE * 8 + CIR_SIZE + startX/2 *CIR_SIZE*2, startY * CIR_SIZE * 2, stage[startY][startX] - '0');
-
-			// choose power
 			input = getch();
-			while (input != KEY_UP)
-			{
-				if (input == KEY_RIGHT && xPower < 4)
-					xPower++;
-				else if (input == KEY_LEFT && xPower > -4)
-					xPower--;
-				printPower(xPower);
+		}
 
-				input = getch();
-			}
-			shoot(xPower, circle, stage, &tab);
+		shoot(xPower, circle, stage, &tab);
 
-			if (isOver(stage))
-			{
-				kill(pid, SIGKILL);
-				system("say Game Over!");
+		if (isOver(stage))
+		{
+			system("say Game Over!");
 
-				ch = getchar();
-
-				fp = fopen("best.bin", "wb");
-				buffer[0] = bestStage;
-				buffer[1] = bestScore;
-				fwrite(buffer, sizeof(int), 2, fp);
-				fclose(fp);
-
-				break;
-			}
+			return;
 		}
 
 		if (isEnd(stage))
 		{
 			system("say Clear!");
 
-			stage3();
+			return;
 		}
 	}
+	
 }
 
 void shoot(int x, char circle[][CIR_MAX], char map[][15], int *tab)
@@ -379,6 +554,7 @@ void shoot(int x, char circle[][CIR_MAX], char map[][15], int *tab)
 			printCircle(circle, COLS/2 - CIR_SIZE * 7 + curX/2 * CIR_SIZE * 2, curY * CIR_SIZE * 2, ball-'0');
 	}
 
+	usleep(100000);
 	search(map, curX, curY, ball);
 }
 
@@ -676,7 +852,7 @@ void search(char map[][15], int xBall, int yBall, char ball)
 		for (i = 0; i < 7; i++)
 		{
 			attron(COLOR_PAIR(BACK_FAIR));
-			mvhline(i, 0, ' ', 20);
+			mvhline(i, 31, ' ', 18);
 			mvhline(LINES-7+i, 0, ' ', 25);
 			attroff(COLOR_PAIR(BACK_FAIR));
 		}
@@ -686,25 +862,25 @@ void search(char map[][15], int xBall, int yBall, char ball)
 		{
 			switch(buffer[i] - '0')
 			{
-				case 0 : printScore(number0, 6*i, 0);
+				case 0 : printScore(number0, 31 + 6*i, 0);
 						break;
-				case 1 : printScore(number1, 6*i, 0);
+				case 1 : printScore(number1, 31 + 6*i, 0);
 						break;
-				case 2 : printScore(number2, 6*i, 0);
+				case 2 : printScore(number2, 31 + 6*i, 0);
 						break;
-				case 3 : printScore(number3, 6*i, 0);
+				case 3 : printScore(number3, 31 + 6*i, 0);
 						break;
-				case 4 : printScore(number4, 6*i, 0);
+				case 4 : printScore(number4, 31 + 6*i, 0);
 						break;
-				case 5 : printScore(number5, 6*i, 0);
+				case 5 : printScore(number5, 31 + 6*i, 0);
 						break;
-				case 6 : printScore(number6, 6*i, 0);
+				case 6 : printScore(number6, 31 + 6*i, 0);
 						break;
-				case 7 : printScore(number7, 6*i, 0);
+				case 7 : printScore(number7, 31 + 6*i, 0);
 						break;
-				case 8 : printScore(number8, 6*i, 0);
+				case 8 : printScore(number8, 31 + 6*i, 0);
 						break;
-				case 9 : printScore(number9, 6*i, 0);
+				case 9 : printScore(number9, 31 + 6*i, 0);
 						break;
 			}
 		}
@@ -768,5 +944,55 @@ void search(char map[][15], int xBall, int yBall, char ball)
 		}
 
 	}
-	
+}
+
+void printRedScore(char number[][5], int x, int y)
+{
+	int i, j;
+
+	for (i = 0; i < 7; i++)
+		for (j = 0; j < 5; j++)
+			if (number[i][j] != '0')
+			{
+				attron(COLOR_PAIR(BALL1));
+				mvhline(y + i, x + j, ' ', 1);
+				attroff(COLOR_PAIR(BALL1));
+			}
+     
+
+     refresh();
+}
+
+void printGreenScore(char number[][5], int x, int y)
+{
+	int i, j;
+
+	for (i = 0; i < 6; i++)
+		for (j = 0; j < 5; j++)
+			if (number[i][j] != '0')
+			{
+				attron(COLOR_PAIR(FONT_FAIR));
+				mvhline(y + i, x + j, ' ', 1);
+				attroff(COLOR_PAIR(FONT_FAIR));
+			}
+     
+
+     refresh();
+}
+
+void printAlp(char number[][5], int x, int y)
+{
+	int i, j;
+
+	for (i = 0; i < 6; i++)
+		for (j = 0; j < 5; j++)
+			if (number[i][j] != '0')
+			{
+				attron(COLOR_PAIR(FBACK_FAIR));
+				mvhline(y + i, x + j, ' ', 1);
+				attroff(COLOR_PAIR(FBACK_FAIR));
+			}
+     
+
+     refresh();
 }
