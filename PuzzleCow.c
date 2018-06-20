@@ -9,12 +9,15 @@
 #include <string.h>
 #include <curses.h>
 #include <unistd.h>
+#include <signal.h>
+#include <sys/types.h>
 #include <termios.h>
 #include "library.h"
 
 int bestStage = 0;
 int bestScore = 0;
 int score = 0;
+<<<<<<< Updated upstream
 
 extern char number0[7][5];
 extern char number1[7][5];
@@ -78,37 +81,37 @@ int main()
     buffer[1] = bestScore;
     fwrite(buffer, sizeof(int), 2, fp);
     fclose(fp);
+=======
+>>>>>>> Stashed changes
 
-    endwin();
-    return 0;
-}
+extern char number0[7][5];
+extern char number1[7][5];
+extern char number2[7][5];
+extern char number3[7][5];
+extern char number4[7][5];
+extern char number5[7][5];
+extern char number6[7][5];
+extern char number7[7][5];
+extern char number8[7][5];
+extern char number9[7][5];
 
-void mainMenu()
-{
-    int i , j;
-    int ch;
-    char string[20];
-    char Circle[CIR_MAX][CIR_MAX] = {0, };
-    struct termios ttystate;
-    struct termios origin;
+char P[WORD_SIZE][WORD_SIZE] = {  {"1111111111  "},
+                                  {"11110000111 "},
+                                  {"11110   111 "},
+                                  {"11111111110 "},
+                                  {"1111000000  "},
+                                  {"11110       "},
+                                  {"11110       "},
+                                  {"00000       "}};
 
-    char P[WORD_SIZE][WORD_SIZE] = { {"1111111111  "},
-                                     {"11110000111 "},
-                                     {"11110   111 "},
-                                     {"11111111110 "},
-                                     {"1111000000  "},
-                                     {"11110       "},
-                                     {"11110       "},
-                                     {"00000       "}};
-
-    char U[WORD_SIZE][WORD_SIZE] = { {"1110    1110"},
-                                     {"1110    1110"},
-                                     {"1110    1110"},
-                                     {"1110    1110"},
-                                     {"1110    1110"},
-                                     {"111111111110"},
-                                     {"  1111111110"},
-                                     {"   000000000"} };
+char U[WORD_SIZE][WORD_SIZE] = { {"1110    1110"},
+                                 {"1110    1110"},
+                                 {"1110    1110"},
+                                 {"1110    1110"},
+                                 {"1110    1110"},
+                                 {"111111111110"},
+                                 {"  1111111110"},
+                                 {"   000000000"} };
 
     char Z[WORD_SIZE][WORD_SIZE] = { {"111111111110"},
                                      {"111111111110"},
@@ -165,7 +168,108 @@ void mainMenu()
                                      {"  11101110  "},
                                      {"   00  00   "} };
 
+void mainMenu();
+void printAlphabet(char alphabet[][WORD_SIZE], int x, int y);
+void printBox();
+int selectStage();
+
+int main()
+{
+    FILE *fp;
+    int buffer[2];    // store best Score
+    int stageNum;
+    int pid;
+
+    //initialization
+    pid = fork();
+    if (pid == 0)
+        system("afplay Music.mp3");
     
+
+    else
+    {
+        char userInput = '0';
+        initscr();
+        mainMenu();
+
+        // read best
+        fp = fopen("best.bin", "rb");
+        if (fp != NULL)
+        {
+            fread(buffer, sizeof(int), 2, fp);
+            bestStage = buffer[0];
+            bestScore = buffer[1];
+            fclose(fp);
+        }
+
+        fflush(stdin);
+
+        while (1)
+        {
+            // print main window
+            clear();
+            // print Box
+            printBox();
+
+            // print puzzle
+            printAlphabet(P, COLS/2 - 39, LINES/8);
+            printAlphabet(U, COLS/2 - 26, LINES/8 - 1);
+            printAlphabet(Z, COLS/2 - 12, LINES/8 - 2);
+            printAlphabet(Z, COLS/2 + 2,  LINES/8 - 2);
+            printAlphabet(L, COLS/2 + 16, LINES/8 - 1);
+            printAlphabet(E, COLS/2 + 30, LINES/8);
+
+            // print cow
+            printAlphabet(C, COLS/2 - 19, LINES/8 + 11);
+            printAlphabet(O, COLS/2 - 6, LINES/8 + 10);
+            printAlphabet(W, COLS/2 + 8, LINES/8 + 11);
+
+
+            stageNum = selectStage();
+
+            switch(stageNum)
+            {
+                case 1 : stage1();
+                            break;
+                case 2 : stage2();
+                            break;
+                case 3 : stage3();
+                            break;
+                case 4 : stage4();
+                            break;
+            }
+
+            fflush(stdin);
+
+            userInput = getchar();
+
+            if (userInput == 'q')
+                break;
+        }
+
+        // save users data
+        fp = fopen("best.bin", "wb");
+        buffer[0] = bestStage;
+        buffer[1] = bestScore;
+        fwrite(buffer, sizeof(int), 2, fp);
+        fclose(fp);
+
+        system("killall afplay");
+
+        endwin();
+    }
+    return 0;
+}
+
+void mainMenu()
+{
+    int i , j;
+    int ch;
+    char string[20];
+    char Circle[CIR_MAX][CIR_MAX] = {0, };
+    struct termios ttystate;
+    struct termios origin;
+
         // initialize curses and settings
         keypad(stdscr, TRUE);   // to use arrow key
         clear();
@@ -256,7 +360,11 @@ int selectStage()
     int input = 0;
     int cur = 1;
 
+<<<<<<< Updated upstream
     bestStage = 3;
+=======
+    bestStage = 4;
+>>>>>>> Stashed changes
 
     printRedScore(number1, COLS/2 - 30, LINES - 10);
 

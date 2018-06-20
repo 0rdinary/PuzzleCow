@@ -94,6 +94,101 @@ char number0[7][5] = { {"01110"},
 					   {"10001"},
 					   {"01110"} };
 
+char smallP[6][5] = { {"11111"},
+				      {"10001"},
+				      {"10001"},
+				      {"11111"},
+				      {"10000"},
+				      {"10000"} };
+
+char smallU[6][5] = { {"10001"},
+				      {"10001"},
+				      {"10001"},
+				      {"10001"},
+				      {"11011"},
+				      {"01110"} };
+
+char smallZ[6][5] = { {"11111"},
+				      {"00011"},
+				      {"00110"},
+				      {"01100"},
+				      {"11000"},
+				      {"11111"} };
+
+char smallL[6][5] = { {"10000"},
+				      {"10000"},
+				      {"10000"},
+				      {"10000"},
+				      {"10000"},
+				      {"11111"} };
+
+char smallE[6][5] = { {"11111"},
+				      {"10000"},
+				      {"11110"},
+				      {"11110"},
+				      {"10000"},
+				      {"11111"} };
+
+char smallC[6][5] = { {"01111"},
+				      {"11001"},
+				      {"10000"},
+				      {"10000"},
+				      {"11001"},
+				      {"01110"} };
+
+char smallO[6][5] = { {"01110"},
+				      {"11011"},
+				      {"10001"},
+				      {"10001"},
+				      {"11011"},
+				      {"01110"} };
+
+char smallW[6][5] = { {"10001"},
+				      {"10101"},
+				      {"10101"},
+				      {"10101"},
+				      {"10101"},
+				      {"01110"} };
+
+char smallN[6][5] = { {"10001"},
+				      {"11001"},
+				      {"11101"},
+				      {"10111"},
+				      {"10011"},
+				      {"10001"} };
+
+char smallX[6][5] = { {"10001"},
+				      {"11011"},
+				      {"01110"},
+				      {"00100"},
+				      {"10101"},
+				      {"10001"} };
+
+char smallT[6][5] = { {"11111"},
+				      {"10101"},
+				      {"00100"},
+				      {"00100"},
+				      {"00100"},
+				      {"00100"} };
+
+char smallS[6][5] = { {"11111"},
+				      {"10001"},
+				      {"11100"},
+				      {"00111"},
+				      {"10001"},
+				      {"11111"} };
+
+char smallR[6][5] = { {"11111"},
+				      {"10001"},
+				      {"01110"},
+				      {"00100"},
+				      {"10101"},
+				      {"10001"} };
+
+
+
+				    
+
 
 void printStageBorder()
 {
@@ -148,7 +243,11 @@ void deleteScore(int x, int y)
 void initStage(char circle[][CIR_MAX], char map[][15])
 {
 	int i, j;
+	char buffer1[10];
+	char buffer2[10];
 
+
+	printScore(number0, 0, 0);
 	for (i = 0; i < 12; i++) {
 		if (i%2 == 0)
 			for (j = 0; j < 15; j += 2)
@@ -165,15 +264,86 @@ void initStage(char circle[][CIR_MAX], char map[][15])
 
 	}
 	printPower(0);
+
+	sprintf(buffer1, "%d", bestStage);
+		for (i = 0; buffer1[i] != '\0'; i++)
+		{
+			switch(buffer1[i] - '0')
+			{
+				case 0 : printScore(number0, 0, LINES-7);
+						break;
+				case 1 : printScore(number1, 0, LINES-7);
+						break;
+				case 2 : printScore(number2, 0, LINES-7);
+						break;
+				case 3 : printScore(number3, 0, LINES-7);
+						break;
+				case 4 : printScore(number4, 0, LINES-7);
+						break;
+				case 5 : printScore(number5, 0, LINES-7);
+						break;
+				case 6 : printScore(number6, 0, LINES-7);
+						break;
+				case 7 : printScore(number7, 0, LINES-7);
+						break;
+				case 8 : printScore(number8, 0, LINES-7);
+						break;
+				case 9 : printScore(number9, 0, LINES-7);
+						break;
+			}
+		}
+
+		// print bsetScore
+		sprintf(buffer2, "%d", bestScore);
+		for (i = 0; buffer2[i] != '\0'; i++)
+		{
+			switch(buffer2[i] - '0')
+			{
+				case 0 : printScore(number0, 10 + i * 6, LINES-7);
+						break;
+				case 1 : printScore(number1, 10 + i * 6, LINES-7);
+						break;
+				case 2 : printScore(number2, 10 + i * 6, LINES-7);
+						break;
+				case 3 : printScore(number3, 10 + i * 6, LINES-7);
+						break;
+				case 4 : printScore(number4, 10 + i * 6, LINES-7);
+						break;
+				case 5 : printScore(number5, 10 + i * 6, LINES-7);
+						break;
+				case 6 : printScore(number6, 10 + i * 6, LINES-7);
+						break;
+				case 7 : printScore(number7, 10 + i * 6, LINES-7);
+						break;
+				case 8 : printScore(number8, 10 + i * 6, LINES-7);
+						break;
+				case 9 : printScore(number9, 10 + i * 6, LINES-7);
+						break;
+			}
+		}
+
+	printGreenScore(smallP, COLS-36, 0);
+	printGreenScore(smallU, COLS-30, 0);
+	printGreenScore(smallZ, COLS-24, 0);
+	printGreenScore(smallZ, COLS-18, 0);
+	printGreenScore(smallL, COLS-12, 0);
+	printGreenScore(smallE, COLS-6, 0);
+
+	printGreenScore(smallC, COLS-18, 8);
+	printGreenScore(smallO, COLS-12, 8);
+	printGreenScore(smallW, COLS-6, 8);
 }
 
 void stage1()
 {
 	int tab = 3;
 	FILE *fp;
+	int i;
 	int input;
 	int xPower = 0;
 	int pid;
+	char ballCycle[10];
+	int ballIdx = 0;
 	char ch;
 	char startX = 7;
 	char startY = 11;
@@ -192,6 +362,7 @@ void stage1()
 
 	char circle[CIR_MAX][CIR_MAX];
 
+<<<<<<< Updated upstream
 	/*
     //for play music 
 	if ( (pid = fork()) == 0 )
@@ -202,59 +373,75 @@ void stage1()
 
 	//else 
 	 //{
+=======
+>>>>>>> Stashed changes
 
-		makeCircle(circle, CIR_SIZE);
-		clear();
+	makeCircle(circle, CIR_SIZE);
+	clear();
 
-		printStageBorder();
-		stage[startY][startX] = rand()%4 + '5';
-		initStage(circle, stage);
-		printScore(number0, 0, 0);
+	printStageBorder();
+	stage[startY][startX] = rand()%4 + '5';
+	initStage(circle, stage);
 
-		// loop shoot
+	// loop shoot
 
-		srand(time(NULL));
+	srand(time(NULL));
 
-		while (!isEnd(stage))
+	for (i = 0; i < 10; i++)
+		ballCycle[i] = rand()%4 + '5';
+
+	while (!isEnd(stage))
+	{
+		xPower = 0;
+		printPower(xPower);
+
+		if (ballIdx > 9)
+			ballIdx = 0;
+		stage[startY][startX] = ballCycle[ballIdx++];
+
+		// print current and next ball
+		printCircle(circle, COLS/2 - CIR_SIZE * 8 + CIR_SIZE + startX/2 *CIR_SIZE*2, startY * CIR_SIZE * 2, stage[startY][startX] - '0');
+		printCircle(circle, COLS - CIR_SIZE * 3 , LINES - CIR_SIZE * 3, ballCycle[ballIdx] - '0');
+
+		// choose power
+		input = getch();
+		while (input != KEY_UP)
 		{
-			xPower = 0;
+			if (input == KEY_RIGHT && xPower < 4)
+				xPower++;
+			else if (input == KEY_LEFT && xPower > -4)
+				xPower--;
 			printPower(xPower);
 
-			stage[startY][startX] = rand()%4 + '5';
-			printCircle(circle, COLS/2 - CIR_SIZE * 8 + CIR_SIZE + startX/2 *CIR_SIZE*2, startY * CIR_SIZE * 2, stage[startY][startX] - '0');
-
-			// choose power
 			input = getch();
-			while (input != KEY_UP)
-			{
-				if (input == KEY_RIGHT && xPower < 4)
-					xPower++;
-				else if (input == KEY_LEFT && xPower > -4)
-					xPower--;
-				printPower(xPower);
+		}
 
-				input = getch();
-			}
-			shoot(xPower, circle, stage, &tab);
-
-			if (isOver(stage))
-			{
-				kill(pid, SIGKILL);
-				system("say Game Over!");
-
-				ch = getchar();
-
+<<<<<<< Updated upstream
 				return;
 			}
+=======
+		shoot(xPower, circle, stage, &tab);
+
+		if (isOver(stage))
+		{
+			system("say Game Over!");
+
+			return;
+>>>>>>> Stashed changes
 		}
 
 		if (isEnd(stage))
 		{
 			system("say Clear!");
 
-			stage3();
+			return;
 		}
+<<<<<<< Updated upstream
 	//}
+=======
+	}
+	
+>>>>>>> Stashed changes
 }
 
 void shoot(int x, char circle[][CIR_MAX], char map[][15], int *tab)
@@ -378,6 +565,7 @@ void shoot(int x, char circle[][CIR_MAX], char map[][15], int *tab)
 			printCircle(circle, COLS/2 - CIR_SIZE * 7 + curX/2 * CIR_SIZE * 2, curY * CIR_SIZE * 2, ball-'0');
 	}
 
+	usleep(100000);
 	search(map, curX, curY, ball);
 }
 
@@ -784,4 +972,24 @@ void printRedScore(char number[][5], int x, int y)
      
 
      refresh();
+<<<<<<< Updated upstream
+=======
+}
+
+void printGreenScore(char number[][5], int x, int y)
+{
+	int i, j;
+
+	for (i = 0; i < 6; i++)
+		for (j = 0; j < 5; j++)
+			if (number[i][j] != '0')
+			{
+				attron(COLOR_PAIR(FONT_FAIR));
+				mvhline(y + i, x + j, ' ', 1);
+				attroff(COLOR_PAIR(FONT_FAIR));
+			}
+     
+
+     refresh();
+>>>>>>> Stashed changes
 }
