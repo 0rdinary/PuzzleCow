@@ -161,11 +161,7 @@ char smallX[6][5] = { {"10001"},
 				      {"11011"},
 				      {"01110"},
 				      {"00100"},
-<<<<<<< HEAD
-				      {"10101"},
-=======
 				      {"01010"},
->>>>>>> master_branch
 				      {"10001"} };
 
 char smallT[6][5] = { {"11111"},
@@ -184,21 +180,78 @@ char smallS[6][5] = { {"11111"},
 
 char smallR[6][5] = { {"11111"},
 				      {"10001"},
-<<<<<<< HEAD
-				      {"01110"},
-				      {"00100"},
-				      {"10101"},
-				      {"10001"} };
-
-
-
-				    
-=======
 				      {"11111"},
 				      {"11000"},
 				      {"10110"},
 				      {"10011"} };
->>>>>>> master_branch
+
+char smallB[6][5] = { {"11110"},
+					  {"10010"},
+					  {"10010"},
+					  {"11111"},
+					  {"10001"},
+					  {"11111"} };
+
+char smallG[6][5] = { {"11111"},
+					  {"10001"},
+					  {"10000"},
+					  {"10111"},
+					  {"10001"},
+					  {"11111"} };
+
+char smallA[6][5] = { {"01110"},
+					  {"11011"},
+					  {"10001"},
+					  {"11111"},
+					  {"10001"},
+					  {"10001"} };
+
+char smallM[6][5] = { {"10001"},
+					  {"11011"},
+					  {"11111"},
+					  {"10101"},
+					  {"10101"},
+					  {"10001"} };
+
+char smallV[6][5] = { {"10001"},
+					  {"10001"},
+					  {"10001"},
+					  {"11011"},
+					  {"01110"},
+					  {"00100"} };
+
+char overPicture[32][32] = {{"00000000000000000000000000000000"},
+    						{"00000000000000000000000000000000"},
+    						{"00000000000000111100001111000000"},
+   						    {"00000000000011222211012222100000"},
+    						{"00000000000122222222122222210000"},
+    						{"00000000001222222222212222221000"},
+    						{"00000000012222211111212111111000"},
+						    {"00000000012221122222111222222100"},
+						    {"00000000122212222222112222111210"},
+						    {"00000001122222222222221211222210"},
+						    {"00000012122222221111112122111110"},
+						    {"00000122122222211222221111333331"},
+						    {"00001222222221122211111133331131"},
+						    {"00001222222112221133333111311311"},
+						    {"00012222222211113311131222111111"},
+						    {"00012222222221333111311212222221"},
+						    {"00122222222221111111111221111210"},
+						    {"00122222222222222222212222222100"},
+						    {"00122222222222222222122222222210"},
+						    {"00122222222222222221222222222210"},
+						    {"00122222222222222212222222221141"},
+						    {"00122222222211111222222222114441"},
+						    {"00122222222144444111111111444111"},
+						    {"00122222221441111444444444411441"},
+						    {"00012222222114444111111111144411"},
+						    {"00001222222221111444444444441110"},
+						    {"00001222222222222111111111121100"},
+						    {"00000122222222222222211112211000"},
+						    {"00000012222222222221111221100000"},
+						    {"00000001122222222222222110000000"},
+						    {"00000000011122222222211000000000"},
+						    {"00000000000011111111100000000000"}};
 
 
 void printStageBorder()
@@ -256,9 +309,8 @@ void initStage(char circle[][CIR_MAX], char map[][15])
 	int i, j;
 	char buffer1[10];
 	char buffer2[10];
-<<<<<<< HEAD
-=======
 
+	score = 0;
 
 	// set score
 	printAlp(smallS, 0, 0);
@@ -267,10 +319,7 @@ void initStage(char circle[][CIR_MAX], char map[][15])
 	printAlp(smallR, 18, 0);
 	printAlp(smallE, 24, 0);
 	printScore(number0, 31, 0);
->>>>>>> master_branch
 
-
-	printScore(number0, 0, 0);
 	for (i = 0; i < 12; i++) {
 		if (i%2 == 0)
 			for (j = 0; j < 15; j += 2)
@@ -345,10 +394,7 @@ void initStage(char circle[][CIR_MAX], char map[][15])
 			}
 		}
 
-<<<<<<< HEAD
-=======
 	// print mark
->>>>>>> master_branch
 	printGreenScore(smallP, COLS-36, 0);
 	printGreenScore(smallU, COLS-30, 0);
 	printGreenScore(smallZ, COLS-24, 0);
@@ -359,8 +405,6 @@ void initStage(char circle[][CIR_MAX], char map[][15])
 	printGreenScore(smallC, COLS-18, 8);
 	printGreenScore(smallO, COLS-12, 8);
 	printGreenScore(smallW, COLS-6, 8);
-<<<<<<< HEAD
-=======
 
 	// print next
 	printAlp(smallN, COLS - CIR_SIZE * 3 - 24, LINES-9);
@@ -368,17 +412,20 @@ void initStage(char circle[][CIR_MAX], char map[][15])
 	printAlp(smallX, COLS - CIR_SIZE * 3 - 12, LINES-9);
 	printAlp(smallT, COLS - CIR_SIZE * 3 - 6, LINES-9);
 
->>>>>>> master_branch
+	// print best
+	printAlp(smallB, 0, LINES - 14);
+	printAlp(smallE, 6, LINES - 14);
+	printAlp(smallS, 12, LINES - 14);
+	printAlp(smallT, 18, LINES - 14);
+
 }
 
 void stage1()
 {
 	int tab = 3;
-	FILE *fp;
 	int i;
 	int input;
 	int xPower = 0;
-	int pid;
 	char ballCycle[10];
 	int ballIdx = 0;
 	char ch;
@@ -399,26 +446,11 @@ void stage1()
 
 	char circle[CIR_MAX][CIR_MAX];
 
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-	/*
-    //for play music 
-	if ( (pid = fork()) == 0 )
-	{
-        system("afplay Music.mp3");
-    }*/
-
-
-	//else 
-	 //{
-=======
->>>>>>> Stashed changes
 
 	makeCircle(circle, CIR_SIZE);
 	clear();
 
 	printStageBorder();
-	stage[startY][startX] = rand()%4 + '5';
 	initStage(circle, stage);
 
 	// loop shoot
@@ -439,55 +471,7 @@ void stage1()
 
 		// print current and next ball
 		printCircle(circle, COLS/2 - CIR_SIZE * 8 + CIR_SIZE + startX/2 *CIR_SIZE*2, startY * CIR_SIZE * 2, stage[startY][startX] - '0');
-		printCircle(circle, COLS - CIR_SIZE * 3 , LINES - CIR_SIZE * 3, ballCycle[ballIdx] - '0');
-
-		// choose power
-		input = getch();
-		while (input != KEY_UP)
-		{
-			if (input == KEY_RIGHT && xPower < 4)
-				xPower++;
-			else if (input == KEY_LEFT && xPower > -4)
-				xPower--;
-			printPower(xPower);
-
-			input = getch();
-		}
-
-<<<<<<< Updated upstream
-				return;
-			}
-=======
-		shoot(xPower, circle, stage, &tab);
-
-=======
-
-	makeCircle(circle, CIR_SIZE);
-	clear();
-
-	printStageBorder();
-	stage[startY][startX] = rand()%4 + '5';
-	initStage(circle, stage);
-
-	// loop shoot
-
-	srand(time(NULL));
-
-	for (i = 0; i < 10; i++)
-		ballCycle[i] = rand()%4 + '5';
-
-	while (!isEnd(stage))
-	{
-		xPower = 0;
-		printPower(xPower);
-
-		if (ballIdx > 9)
-			ballIdx = 0;
-		stage[startY][startX] = ballCycle[ballIdx++];
-
-		// print current and next ball
-		printCircle(circle, COLS/2 - CIR_SIZE * 8 + CIR_SIZE + startX/2 *CIR_SIZE*2, startY * CIR_SIZE * 2, stage[startY][startX] - '0');
-		printCircle(circle, COLS - CIR_SIZE * 3 , LINES - CIR_SIZE * 3 , ballCycle[ballIdx] - '0');
+		printCircle(circle, COLS - CIR_SIZE * 3 , LINES - CIR_SIZE * 3 , ballCycle[ballIdx%10] - '0');
 
 		// choose power
 		input = getch();
@@ -504,33 +488,21 @@ void stage1()
 
 		shoot(xPower, circle, stage, &tab);
 
->>>>>>> master_branch
 		if (isOver(stage))
 		{
-			system("say Game Over!");
+			gameOver();
 
 			return;
-<<<<<<< HEAD
->>>>>>> Stashed changes
-=======
->>>>>>> master_branch
 		}
 
 		if (isEnd(stage))
 		{
-			system("say Clear!");
+			system("say Do you know da wae?");
 
 			return;
 		}
-<<<<<<< Updated upstream
-	//}
-=======
 	}
 	
-<<<<<<< HEAD
->>>>>>> Stashed changes
-=======
->>>>>>> master_branch
 }
 
 void shoot(int x, char circle[][CIR_MAX], char map[][15], int *tab)
@@ -1061,11 +1033,6 @@ void printRedScore(char number[][5], int x, int y)
      
 
      refresh();
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> master_branch
 }
 
 void printGreenScore(char number[][5], int x, int y)
@@ -1083,9 +1050,6 @@ void printGreenScore(char number[][5], int x, int y)
      
 
      refresh();
-<<<<<<< HEAD
->>>>>>> Stashed changes
-=======
 }
 
 void printAlp(char number[][5], int x, int y)
@@ -1103,5 +1067,48 @@ void printAlp(char number[][5], int x, int y)
      
 
      refresh();
->>>>>>> master_branch
+}
+
+void gameOver()
+{
+	int i, j;
+	char ch;
+
+	clear();
+
+	for (i = 0; i < 32; i++)
+		for (j = 0; j < 32; j++)
+		{
+			if (overPicture[i][j] == '0' || overPicture[i][j] == '1')
+				attron(COLOR_PAIR(BACK_FAIR));
+
+			else if (overPicture[i][j] == '3')
+				attron(COLOR_PAIR(FBACK_FAIR));
+
+			else if (overPicture[i][j] == '2')
+				attron(COLOR_PAIR(FONT_FAIR));
+
+			else if (overPicture[i][j] == '4')
+				attron(COLOR_PAIR(BALL1));
+
+			mvhline(LINES/2 - 24 + i, COLS/2 - 16 + j, ' ', 1);
+
+			attroff(COLOR_PAIR(BACK_FAIR));
+			attroff(COLOR_PAIR(FBACK_FAIR));
+			attroff(COLOR_PAIR(FONT_FAIR));
+			attroff(COLOR_PAIR(BALL1));
+		}
+
+	printAlp(smallG, COLS/2 - 24, LINES/2 + 14);
+	printAlp(smallA, COLS/2 - 18, LINES/2 + 14);
+	printAlp(smallM, COLS/2 - 12, LINES/2 + 14);
+	printAlp(smallE, COLS/2 - 6, LINES/2 + 14);
+	printAlp(smallO, COLS/2 + 6, LINES/2 + 14);
+	printAlp(smallV, COLS/2 + 12, LINES/2 + 14);
+	printAlp(smallE, COLS/2 + 18, LINES/2 + 14);
+	printAlp(smallR, COLS/2 + 24, LINES/2 + 14);
+
+	system("say Game Over!");
+
+	fflush(stdin);
 }

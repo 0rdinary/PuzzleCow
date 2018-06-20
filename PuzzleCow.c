@@ -17,72 +17,6 @@
 int bestStage = 0;
 int bestScore = 0;
 int score = 0;
-<<<<<<< Updated upstream
-
-extern char number0[7][5];
-extern char number1[7][5];
-extern char number2[7][5];
-extern char number3[7][5];
-extern char number4[7][5];
-extern char number5[7][5];
-extern char number6[7][5];
-extern char number7[7][5];
-extern char number8[7][5];
-extern char number9[7][5];
-
-void mainMenu();
-void printAlphabet(char alphabet[][WORD_SIZE], int x, int y);
-void printBox();
-int selectStage();
-
-int main()
-{
-    FILE *fp;
-    int buffer[2];    // store best Score
-
-    //initialization
-    char userInput = '0';
-    initscr();
-    mainMenu();
-
-    // read best
-    fp = fopen("best.bin", "rb");
-    if (fp != NULL)
-    {
-        fread(buffer, sizeof(int), 2, fp);
-        bestStage = buffer[0];
-        bestScore = buffer[1];
-        fclose(fp);
-    }
-
-    fflush(stdin);
-
-    selectStage();
-    while (userInput != 'q')
-    {
-        switch(userInput)
-        {
-            case '1' : stage1();
-                        break;
-            case '2' : if (bestStage > 0) stage2();
-                        break;
-            case '3' : if (bestStage > 1) stage3();
-                        break;
-            case '4' : if (bestStage > 2) stage4();
-                        break;
-        }
-
-        userInput = getchar();
-    }
-
-    // save users data
-    fp = fopen("best.bin", "wb");
-    buffer[0] = bestStage;
-    buffer[1] = bestScore;
-    fwrite(buffer, sizeof(int), 2, fp);
-    fclose(fp);
-=======
->>>>>>> Stashed changes
 
 extern char number0[7][5];
 extern char number1[7][5];
@@ -172,6 +106,7 @@ void mainMenu();
 void printAlphabet(char alphabet[][WORD_SIZE], int x, int y);
 void printBox();
 int selectStage();
+void Start(int x, int y);
 
 int main()
 {
@@ -184,7 +119,6 @@ int main()
     pid = fork();
     if (pid == 0)
         system("afplay Music.mp3");
-    
 
     else
     {
@@ -204,7 +138,7 @@ int main()
 
         fflush(stdin);
 
-        while (1)
+        while (TRUE)
         {
             // print main window
             clear();
@@ -229,21 +163,22 @@ int main()
 
             switch(stageNum)
             {
-                case 1 : stage1();
-                            break;
-                case 2 : stage2();
-                            break;
-                case 3 : stage3();
-                            break;
-                case 4 : stage4();
-                            break;
+                case 1 : Start(COLS/2 - 30, LINES-17);
+                         stage1();
+                         break;
+                case 2 : Start(COLS/2 - 10, LINES-17);
+                         stage2();
+                         break;
+                case 3 : Start(COLS/2 + 10, LINES-17);
+                         stage3();
+                         break;
+                case 4 : Start(COLS/2 + 30, LINES-17);
+                         stage4();
+                         break;
+                case -1 : break;
             }
 
-            fflush(stdin);
-
-            userInput = getchar();
-
-            if (userInput == 'q')
+            if (stageNum == -1)
                 break;
         }
 
@@ -359,12 +294,7 @@ int selectStage()
 {
     int input = 0;
     int cur = 1;
-
-<<<<<<< Updated upstream
-    bestStage = 3;
-=======
-    bestStage = 4;
->>>>>>> Stashed changes
+    FILE *fp;
 
     printRedScore(number1, COLS/2 - 30, LINES - 10);
 
@@ -453,6 +383,9 @@ int selectStage()
         else if (input == KEY_RIGHT && cur != bestStage+1)
         {
             cur++;
+
+            if (cur > 4)
+                cur = 4;
             deleteScore(COLS/2 - 30, LINES-10);
             deleteScore(COLS/2 - 10, LINES-10);
             deleteScore(COLS/2 + 10, LINES-10);
@@ -515,8 +448,37 @@ int selectStage()
             }
 
         }
+
+        else if (input == 'q')
+        {
+            cur = -1;
+            return cur;
+        }
+
         input = getch();
     }
 
     return cur;
+}
+
+void Start(int x, int y)
+{
+    char circle[CIR_MAX][CIR_MAX];
+
+    makeCircle(circle, CIR_SIZE);
+
+    for (int i = 0; i < 7; i++)
+    {
+        if (i%2 == 0)
+            printCircle(circle, x - 3, y - i * CIR_SIZE * 2, 5);
+        else
+            printCircle(circle, x, y - i * CIR_SIZE * 2, 5);
+
+        usleep(150000);
+
+        if (i%2 == 0)
+            deleteCircle(x - 3, y - i * CIR_SIZE * 2);
+        else
+            deleteCircle(x, y - i * CIR_SIZE * 2);
+    }
 }

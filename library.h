@@ -30,11 +30,11 @@ void search(char map[][15], int xBall, int yBall, char ball);
 void stage2();
 void printScore(char number[][5], int x, int y);
 void printRedScore(char number[][5], int x, int y);
-<<<<<<< Updated upstream
-=======
 void printGreenScore(char number[][5], int x, int y);
->>>>>>> Stashed changes
+void printAlp(char number[][5], int x, int y);
 void deleteScore(int x, int y);
 void stage3();
 void stage4();
 int selectStage();
+void gameOver();
+void Start(int x, int y);
