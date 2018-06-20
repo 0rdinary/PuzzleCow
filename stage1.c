@@ -94,6 +94,165 @@ char number0[7][5] = { {"01110"},
 					   {"10001"},
 					   {"01110"} };
 
+char smallP[6][5] = { {"11111"},
+				      {"10001"},
+				      {"10001"},
+				      {"11111"},
+				      {"10000"},
+				      {"10000"} };
+
+char smallU[6][5] = { {"10001"},
+				      {"10001"},
+				      {"10001"},
+				      {"10001"},
+				      {"11011"},
+				      {"01110"} };
+
+char smallZ[6][5] = { {"11111"},
+				      {"00011"},
+				      {"00110"},
+				      {"01100"},
+				      {"11000"},
+				      {"11111"} };
+
+char smallL[6][5] = { {"10000"},
+				      {"10000"},
+				      {"10000"},
+				      {"10000"},
+				      {"10000"},
+				      {"11111"} };
+
+char smallE[6][5] = { {"11111"},
+				      {"10000"},
+				      {"11110"},
+				      {"11110"},
+				      {"10000"},
+				      {"11111"} };
+
+char smallC[6][5] = { {"01111"},
+				      {"11001"},
+				      {"10000"},
+				      {"10000"},
+				      {"11001"},
+				      {"01110"} };
+
+char smallO[6][5] = { {"01110"},
+				      {"11011"},
+				      {"10001"},
+				      {"10001"},
+				      {"11011"},
+				      {"01110"} };
+
+char smallW[6][5] = { {"10001"},
+				      {"10101"},
+				      {"10101"},
+				      {"10101"},
+				      {"10101"},
+				      {"01110"} };
+
+char smallN[6][5] = { {"10001"},
+				      {"11001"},
+				      {"11101"},
+				      {"10111"},
+				      {"10011"},
+				      {"10001"} };
+
+char smallX[6][5] = { {"10001"},
+				      {"11011"},
+				      {"01110"},
+				      {"00100"},
+				      {"01010"},
+				      {"10001"} };
+
+char smallT[6][5] = { {"11111"},
+				      {"10101"},
+				      {"00100"},
+				      {"00100"},
+				      {"00100"},
+				      {"00100"} };
+
+char smallS[6][5] = { {"11111"},
+				      {"10001"},
+				      {"11100"},
+				      {"00111"},
+				      {"10001"},
+				      {"11111"} };
+
+char smallR[6][5] = { {"11111"},
+				      {"10001"},
+				      {"11111"},
+				      {"11000"},
+				      {"10110"},
+				      {"10011"} };
+
+char smallB[6][5] = { {"11110"},
+					  {"10010"},
+					  {"10010"},
+					  {"11111"},
+					  {"10001"},
+					  {"11111"} };
+
+char smallG[6][5] = { {"11111"},
+					  {"10001"},
+					  {"10000"},
+					  {"10111"},
+					  {"10001"},
+					  {"11111"} };
+
+char smallA[6][5] = { {"01110"},
+					  {"11011"},
+					  {"10001"},
+					  {"11111"},
+					  {"10001"},
+					  {"10001"} };
+
+char smallM[6][5] = { {"10001"},
+					  {"11011"},
+					  {"11111"},
+					  {"10101"},
+					  {"10101"},
+					  {"10001"} };
+
+char smallV[6][5] = { {"10001"},
+					  {"10001"},
+					  {"10001"},
+					  {"11011"},
+					  {"01110"},
+					  {"00100"} };
+
+char overPicture[32][32] = {{"00000000000000000000000000000000"},
+    						{"00000000000000000000000000000000"},
+    						{"00000000000000111100001111000000"},
+   						    {"00000000000011222211012222100000"},
+    						{"00000000000122222222122222210000"},
+    						{"00000000001222222222212222221000"},
+    						{"00000000012222211111212111111000"},
+						    {"00000000012221122222111222222100"},
+						    {"00000000122212222222112222111210"},
+						    {"00000001122222222222221211222210"},
+						    {"00000012122222221111112122111110"},
+						    {"00000122122222211222221111333331"},
+						    {"00001222222221122211111133331131"},
+						    {"00001222222112221133333111311311"},
+						    {"00012222222211113311131222111111"},
+						    {"00012222222221333111311212222221"},
+						    {"00122222222221111111111221111210"},
+						    {"00122222222222222222212222222100"},
+						    {"00122222222222222222122222222210"},
+						    {"00122222222222222221222222222210"},
+						    {"00122222222222222212222222221141"},
+						    {"00122222222211111222222222114441"},
+						    {"00122222222144444111111111444111"},
+						    {"00122222221441111444444444411441"},
+						    {"00012222222114444111111111144411"},
+						    {"00001222222221111444444444441110"},
+						    {"00001222222222222111111111121100"},
+						    {"00000122222222222222211112211000"},
+						    {"00000012222222222221111221100000"},
+						    {"00000001122222222222222110000000"},
+						    {"00000000011122222222211000000000"},
+						    {"00000000000011111111100000000000"}};
+
 
 void printStageBorder()
 {
@@ -148,6 +307,18 @@ void deleteScore(int x, int y)
 void initStage(char circle[][CIR_MAX], char map[][15])
 {
 	int i, j;
+	char buffer1[10];
+	char buffer2[10];
+
+	score = 0;
+
+	// set score
+	printAlp(smallS, 0, 0);
+	printAlp(smallC, 6, 0);
+	printAlp(smallO, 12, 0);
+	printAlp(smallR, 18, 0);
+	printAlp(smallE, 24, 0);
+	printScore(number0, 31, 0);
 
 	for (i = 0; i < 12; i++) {
 		if (i%2 == 0)
@@ -165,15 +336,98 @@ void initStage(char circle[][CIR_MAX], char map[][15])
 
 	}
 	printPower(0);
+
+	sprintf(buffer1, "%d", bestStage);
+		for (i = 0; buffer1[i] != '\0'; i++)
+		{
+			switch(buffer1[i] - '0')
+			{
+				case 0 : printScore(number0, 0, LINES-7);
+						break;
+				case 1 : printScore(number1, 0, LINES-7);
+						break;
+				case 2 : printScore(number2, 0, LINES-7);
+						break;
+				case 3 : printScore(number3, 0, LINES-7);
+						break;
+				case 4 : printScore(number4, 0, LINES-7);
+						break;
+				case 5 : printScore(number5, 0, LINES-7);
+						break;
+				case 6 : printScore(number6, 0, LINES-7);
+						break;
+				case 7 : printScore(number7, 0, LINES-7);
+						break;
+				case 8 : printScore(number8, 0, LINES-7);
+						break;
+				case 9 : printScore(number9, 0, LINES-7);
+						break;
+			}
+		}
+
+		// print bsetScore
+		sprintf(buffer2, "%d", bestScore);
+		for (i = 0; buffer2[i] != '\0'; i++)
+		{
+			switch(buffer2[i] - '0')
+			{
+				case 0 : printScore(number0, 10 + i * 6, LINES-7);
+						break;
+				case 1 : printScore(number1, 10 + i * 6, LINES-7);
+						break;
+				case 2 : printScore(number2, 10 + i * 6, LINES-7);
+						break;
+				case 3 : printScore(number3, 10 + i * 6, LINES-7);
+						break;
+				case 4 : printScore(number4, 10 + i * 6, LINES-7);
+						break;
+				case 5 : printScore(number5, 10 + i * 6, LINES-7);
+						break;
+				case 6 : printScore(number6, 10 + i * 6, LINES-7);
+						break;
+				case 7 : printScore(number7, 10 + i * 6, LINES-7);
+						break;
+				case 8 : printScore(number8, 10 + i * 6, LINES-7);
+						break;
+				case 9 : printScore(number9, 10 + i * 6, LINES-7);
+						break;
+			}
+		}
+
+	// print mark
+	printGreenScore(smallP, COLS-36, 0);
+	printGreenScore(smallU, COLS-30, 0);
+	printGreenScore(smallZ, COLS-24, 0);
+	printGreenScore(smallZ, COLS-18, 0);
+	printGreenScore(smallL, COLS-12, 0);
+	printGreenScore(smallE, COLS-6, 0);
+
+	printGreenScore(smallC, COLS-18, 8);
+	printGreenScore(smallO, COLS-12, 8);
+	printGreenScore(smallW, COLS-6, 8);
+
+	// print next
+	printAlp(smallN, COLS - CIR_SIZE * 3 - 24, LINES-9);
+	printAlp(smallE, COLS - CIR_SIZE * 3 - 18, LINES-9);
+	printAlp(smallX, COLS - CIR_SIZE * 3 - 12, LINES-9);
+	printAlp(smallT, COLS - CIR_SIZE * 3 - 6, LINES-9);
+
+	// print best
+	printAlp(smallB, 0, LINES - 14);
+	printAlp(smallE, 6, LINES - 14);
+	printAlp(smallS, 12, LINES - 14);
+	printAlp(smallT, 18, LINES - 14);
+
 }
 
 void stage1()
 {
 	int tab = 3;
-	FILE *fp;
+	int i;
 	int input;
 	int xPower = 0;
-	int pid;
+	char ballCycle[10];
+	int ballIdx = 0;
 	char ch;
 	char startX = 7;
 	char startY = 11;
@@ -192,69 +446,63 @@ void stage1()
 
 	char circle[CIR_MAX][CIR_MAX];
 
-	/*
-    //for play music 
-	if ( (pid = fork()) == 0 )
+
+	makeCircle(circle, CIR_SIZE);
+	clear();
+
+	printStageBorder();
+	initStage(circle, stage);
+
+	// loop shoot
+
+	srand(time(NULL));
+
+	for (i = 0; i < 10; i++)
+		ballCycle[i] = rand()%4 + '5';
+
+	while (!isEnd(stage))
 	{
-        system("afplay Music.mp3");
-    }*/
+		xPower = 0;
+		printPower(xPower);
 
+		if (ballIdx > 9)
+			ballIdx = 0;
+		stage[startY][startX] = ballCycle[ballIdx++];
 
-	//else 
-	 //{
+		// print current and next ball
+		printCircle(circle, COLS/2 - CIR_SIZE * 8 + CIR_SIZE + startX/2 *CIR_SIZE*2, startY * CIR_SIZE * 2, stage[startY][startX] - '0');
+		printCircle(circle, COLS - CIR_SIZE * 3 , LINES - CIR_SIZE * 3 , ballCycle[ballIdx%10] - '0');
 
-		makeCircle(circle, CIR_SIZE);
-		clear();
-
-		printStageBorder();
-		stage[startY][startX] = rand()%4 + '5';
-		initStage(circle, stage);
-		printScore(number0, 0, 0);
-
-		// loop shoot
-
-		srand(time(NULL));
-
-		while (!isEnd(stage))
+		// choose power
+		input = getch();
+		while (input != KEY_UP)
 		{
-			xPower = 0;
+			if (input == KEY_RIGHT && xPower < 4)
+				xPower++;
+			else if (input == KEY_LEFT && xPower > -4)
+				xPower--;
 			printPower(xPower);
 
-			stage[startY][startX] = rand()%4 + '5';
-			printCircle(circle, COLS/2 - CIR_SIZE * 8 + CIR_SIZE + startX/2 *CIR_SIZE*2, startY * CIR_SIZE * 2, stage[startY][startX] - '0');
-
-			// choose power
 			input = getch();
-			while (input != KEY_UP)
-			{
-				if (input == KEY_RIGHT && xPower < 4)
-					xPower++;
-				else if (input == KEY_LEFT && xPower > -4)
-					xPower--;
-				printPower(xPower);
+		}
 
-				input = getch();
-			}
-			shoot(xPower, circle, stage, &tab);
+		shoot(xPower, circle, stage, &tab);
 
-			if (isOver(stage))
-			{
-				kill(pid, SIGKILL);
-				system("say Game Over!");
+		if (isOver(stage))
+		{
+			gameOver();
 
-				ch = getchar();
-
-				return;
-			}
+			return;
 		}
 
 		if (isEnd(stage))
 		{
-			system("say Clear!");
+			system("say Do you know da wae?");
 
-			stage3();
+			return;
 		}
-	//}
+	}
+	
 }
 
 void shoot(int x, char circle[][CIR_MAX], char map[][15], int *tab)
@@ -378,6 +626,7 @@ void shoot(int x, char circle[][CIR_MAX], char map[][15], int *tab)
 			printCircle(circle, COLS/2 - CIR_SIZE * 7 + curX/2 * CIR_SIZE * 2, curY * CIR_SIZE * 2, ball-'0');
 	}
 
+	usleep(100000);
 	search(map, curX, curY, ball);
 }
 
@@ -675,7 +924,7 @@ void search(char map[][15], int xBall, int yBall, char ball)
 		for (i = 0; i < 7; i++)
 		{
 			attron(COLOR_PAIR(BACK_FAIR));
-			mvhline(i, 0, ' ', 20);
+			mvhline(i, 31, ' ', 18);
 			mvhline(LINES-7+i, 0, ' ', 25);
 			attroff(COLOR_PAIR(BACK_FAIR));
 		}
@@ -685,25 +934,25 @@ void search(char map[][15], int xBall, int yBall, char ball)
 		{
 			switch(buffer[i] - '0')
 			{
-				case 0 : printScore(number0, 6*i, 0);
+				case 0 : printScore(number0, 31 + 6*i, 0);
 						break;
-				case 1 : printScore(number1, 6*i, 0);
+				case 1 : printScore(number1, 31 + 6*i, 0);
 						break;
-				case 2 : printScore(number2, 6*i, 0);
+				case 2 : printScore(number2, 31 + 6*i, 0);
 						break;
-				case 3 : printScore(number3, 6*i, 0);
+				case 3 : printScore(number3, 31 + 6*i, 0);
 						break;
-				case 4 : printScore(number4, 6*i, 0);
+				case 4 : printScore(number4, 31 + 6*i, 0);
 						break;
-				case 5 : printScore(number5, 6*i, 0);
+				case 5 : printScore(number5, 31 + 6*i, 0);
 						break;
-				case 6 : printScore(number6, 6*i, 0);
+				case 6 : printScore(number6, 31 + 6*i, 0);
 						break;
-				case 7 : printScore(number7, 6*i, 0);
+				case 7 : printScore(number7, 31 + 6*i, 0);
 						break;
-				case 8 : printScore(number8, 6*i, 0);
+				case 8 : printScore(number8, 31 + 6*i, 0);
 						break;
-				case 9 : printScore(number9, 6*i, 0);
+				case 9 : printScore(number9, 31 + 6*i, 0);
 						break;
 			}
 		}
@@ -784,4 +1033,82 @@ void printRedScore(char number[][5], int x, int y)
      
 
      refresh();
+}
+
+void printGreenScore(char number[][5], int x, int y)
+{
+	int i, j;
+
+	for (i = 0; i < 6; i++)
+		for (j = 0; j < 5; j++)
+			if (number[i][j] != '0')
+			{
+				attron(COLOR_PAIR(FONT_FAIR));
+				mvhline(y + i, x + j, ' ', 1);
+				attroff(COLOR_PAIR(FONT_FAIR));
+			}
+     
+
+     refresh();
+}
+
+void printAlp(char number[][5], int x, int y)
+{
+	int i, j;
+
+	for (i = 0; i < 6; i++)
+		for (j = 0; j < 5; j++)
+			if (number[i][j] != '0')
+			{
+				attron(COLOR_PAIR(FBACK_FAIR));
+				mvhline(y + i, x + j, ' ', 1);
+				attroff(COLOR_PAIR(FBACK_FAIR));
+			}
+     
+
+     refresh();
+}
+
+void gameOver()
+{
+	int i, j;
+	char ch;
+
+	clear();
+
+	for (i = 0; i < 32; i++)
+		for (j = 0; j < 32; j++)
+		{
+			if (overPicture[i][j] == '0' || overPicture[i][j] == '1')
+				attron(COLOR_PAIR(BACK_FAIR));
+
+			else if (overPicture[i][j] == '3')
+				attron(COLOR_PAIR(FBACK_FAIR));
+
+			else if (overPicture[i][j] == '2')
+				attron(COLOR_PAIR(FONT_FAIR));
+
+			else if (overPicture[i][j] == '4')
+				attron(COLOR_PAIR(BALL1));
+
+			mvhline(LINES/2 - 24 + i, COLS/2 - 16 + j, ' ', 1);
+
+			attroff(COLOR_PAIR(BACK_FAIR));
+			attroff(COLOR_PAIR(FBACK_FAIR));
+			attroff(COLOR_PAIR(FONT_FAIR));
+			attroff(COLOR_PAIR(BALL1));
+		}
+
+	printAlp(smallG, COLS/2 - 24, LINES/2 + 14);
+	printAlp(smallA, COLS/2 - 18, LINES/2 + 14);
+	printAlp(smallM, COLS/2 - 12, LINES/2 + 14);
+	printAlp(smallE, COLS/2 - 6, LINES/2 + 14);
+	printAlp(smallO, COLS/2 + 6, LINES/2 + 14);
+	printAlp(smallV, COLS/2 + 12, LINES/2 + 14);
+	printAlp(smallE, COLS/2 + 18, LINES/2 + 14);
+	printAlp(smallR, COLS/2 + 24, LINES/2 + 14);
+
+	system("say Game Over!");
+
+	fflush(stdin);
 }

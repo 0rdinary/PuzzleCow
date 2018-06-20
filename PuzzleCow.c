@@ -9,6 +9,8 @@
 #include <string.h>
 #include <curses.h>
 #include <unistd.h>
+#include <signal.h>
+#include <sys/types.h>
 #include <termios.h>
 #include "library.h"
 
@@ -27,88 +29,23 @@ extern char number7[7][5];
 extern char number8[7][5];
 extern char number9[7][5];
 
-void mainMenu();
-void printAlphabet(char alphabet[][WORD_SIZE], int x, int y);
-void printBox();
-int selectStage();
+char P[WORD_SIZE][WORD_SIZE] = {  {"1111111111  "},
+                                  {"11110000111 "},
+                                  {"11110   111 "},
+                                  {"11111111110 "},
+                                  {"1111000000  "},
+                                  {"11110       "},
+                                  {"11110       "},
+                                  {"00000       "}};
 
-int main()
-{
-    FILE *fp;
-    int buffer[2];    // store best Score
-
-    //initialization
-    char userInput = '0';
-    initscr();
-    mainMenu();
-
-    // read best
-    fp = fopen("best.bin", "rb");
-    if (fp != NULL)
-    {
-        fread(buffer, sizeof(int), 2, fp);
-        bestStage = buffer[0];
-        bestScore = buffer[1];
-        fclose(fp);
-    }
-
-    fflush(stdin);
-
-    selectStage();
-    while (userInput != 'q')
-    {
-        switch(userInput)
-        {
-            case '1' : stage1();
-                        break;
-            case '2' : if (bestStage > 0) stage2();
-                        break;
-            case '3' : if (bestStage > 1) stage3();
-                        break;
-            case '4' : if (bestStage > 2) stage4();
-                        break;
-        }
-
-        userInput = getchar();
-    }
-
-    // save users data
-    fp = fopen("best.bin", "wb");
-    buffer[0] = bestStage;
-    buffer[1] = bestScore;
-    fwrite(buffer, sizeof(int), 2, fp);
-    fclose(fp);
-
-    endwin();
-    return 0;
-}
-
-void mainMenu()
-{
-    int i , j;
-    int ch;
-    char string[20];
-    char Circle[CIR_MAX][CIR_MAX] = {0, };
-    struct termios ttystate;
-    struct termios origin;
-
-    char P[WORD_SIZE][WORD_SIZE] = { {"1111111111  "},
-                                     {"11110000111 "},
-                                     {"11110   111 "},
-                                     {"11111111110 "},
-                                     {"1111000000  "},
-                                     {"11110       "},
-                                     {"11110       "},
-                                     {"00000       "}};
-
-    char U[WORD_SIZE][WORD_SIZE] = { {"1110    1110"},
-                                     {"1110    1110"},
-                                     {"1110    1110"},
-                                     {"1110    1110"},
-                                     {"1110    1110"},
-                                     {"111111111110"},
-                                     {"  1111111110"},
-                                     {"   000000000"} };
+char U[WORD_SIZE][WORD_SIZE] = { {"1110    1110"},
+                                 {"1110    1110"},
+                                 {"1110    1110"},
+                                 {"1110    1110"},
+                                 {"1110    1110"},
+                                 {"111111111110"},
+                                 {"  1111111110"},
+                                 {"   000000000"} };
 
     char Z[WORD_SIZE][WORD_SIZE] = { {"111111111110"},
                                      {"111111111110"},
@@ -165,7 +102,109 @@ void mainMenu()
                                      {"  11101110  "},
                                      {"   00  00   "} };
 
-    
+void mainMenu();
+void printAlphabet(char alphabet[][WORD_SIZE], int x, int y);
+void printBox();
+int selectStage();
+void Start(int x, int y);
+
+int main()
+{
+    FILE *fp;
+    int buffer[2];    // store best Score
+    int stageNum;
+    int pid;
+
+    //initialization
+    pid = fork();
+    if (pid == 0)
+        system("afplay Music.mp3");
+
+    else
+    {
+        char userInput = '0';
+        initscr();
+        mainMenu();
+
+        // read best
+        fp = fopen("best.bin", "rb");
+        if (fp != NULL)
+        {
+            fread(buffer, sizeof(int), 2, fp);
+            bestStage = buffer[0];
+            bestScore = buffer[1];
+            fclose(fp);
+        }
+
+        fflush(stdin);
+
+        while (TRUE)
+        {
+            // print main window
+            clear();
+            // print Box
+            printBox();
+
+            // print puzzle
+            printAlphabet(P, COLS/2 - 39, LINES/8);
+            printAlphabet(U, COLS/2 - 26, LINES/8 - 1);
+            printAlphabet(Z, COLS/2 - 12, LINES/8 - 2);
+            printAlphabet(Z, COLS/2 + 2,  LINES/8 - 2);
+            printAlphabet(L, COLS/2 + 16, LINES/8 - 1);
+            printAlphabet(E, COLS/2 + 30, LINES/8);
+
+            // print cow
+            printAlphabet(C, COLS/2 - 19, LINES/8 + 11);
+            printAlphabet(O, COLS/2 - 6, LINES/8 + 10);
+            printAlphabet(W, COLS/2 + 8, LINES/8 + 11);
+
+
+            stageNum = selectStage();
+
+            switch(stageNum)
+            {
+                case 1 : Start(COLS/2 - 30, LINES-17);
+                         stage1();
+                         break;
+                case 2 : Start(COLS/2 - 10, LINES-17);
+                         stage2();
+                         break;
+                case 3 : Start(COLS/2 + 10, LINES-17);
+                         stage3();
+                         break;
+                case 4 : Start(COLS/2 + 30, LINES-17);
+                         stage4();
+                         break;
+                case -1 : break;
+            }
+
+            if (stageNum == -1)
+                break;
+        }
+
+        // save users data
+        fp = fopen("best.bin", "wb");
+        buffer[0] = bestStage;
+        buffer[1] = bestScore;
+        fwrite(buffer, sizeof(int), 2, fp);
+        fclose(fp);
+
+        system("killall afplay");
+
+        endwin();
+    }
+    return 0;
+}
+
+void mainMenu()
+{
+    int i , j;
+    int ch;
+    char string[20];
+    char Circle[CIR_MAX][CIR_MAX] = {0, };
+    struct termios ttystate;
+    struct termios origin;
+
         // initialize curses and settings
         keypad(stdscr, TRUE);   // to use arrow key
         clear();
@@ -255,8 +294,7 @@ int selectStage()
 {
     int input = 0;
     int cur = 1;
-
-    bestStage = 3;
+    FILE *fp;
 
     printRedScore(number1, COLS/2 - 30, LINES - 10);
 
@@ -345,6 +383,9 @@ int selectStage()
         else if (input == KEY_RIGHT && cur != bestStage+1)
         {
             cur++;
+
+            if (cur > 4)
+                cur = 4;
             deleteScore(COLS/2 - 30, LINES-10);
             deleteScore(COLS/2 - 10, LINES-10);
             deleteScore(COLS/2 + 10, LINES-10);
@@ -407,8 +448,37 @@ int selectStage()
             }
 
         }
+
+        else if (input == 'q')
+        {
+            cur = -1;
+            return cur;
+        }
+
         input = getch();
     }
 
     return cur;
+}
+
+void Start(int x, int y)
+{
+    char circle[CIR_MAX][CIR_MAX];
+
+    makeCircle(circle, CIR_SIZE);
+
+    for (int i = 0; i < 7; i++)
+    {
+        if (i%2 == 0)
+            printCircle(circle, x - 3, y - i * CIR_SIZE * 2, 5);
+        else
+            printCircle(circle, x, y - i * CIR_SIZE * 2, 5);
+
+        usleep(150000);
+
+        if (i%2 == 0)
+            deleteCircle(x - 3, y - i * CIR_SIZE * 2);
+        else
+            deleteCircle(x, y - i * CIR_SIZE * 2);
+    }
 }
