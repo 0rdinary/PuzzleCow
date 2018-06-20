@@ -91,6 +91,9 @@ void stage2()
 		{
 			system("say End Game!");
 
+			if (bestStage < 2)
+				bestStage = 2;
+
 			return;
 		}
 	}

@@ -16,11 +16,11 @@ extern int bestStage;
 void stage3()
 {
 	int tab = 3;
-	FILE *fp;
+	int i;
 	int input;
-	int buffer[2];
 	int xPower = 0;
-	int pid;
+	char ballCycle[10];
+	int ballIdx = 0;
 	char ch;
 	char startX = 7;
 	char startY = 11;
@@ -39,59 +39,62 @@ void stage3()
 
 	char circle[CIR_MAX][CIR_MAX];
 
-		makeCircle(circle, CIR_SIZE);
-		clear();
+	makeCircle(circle, CIR_SIZE);
+	clear();
 
-		printStageBorder();
-		stage[startY][startX] = rand()%4 + '5';
-		initStage(circle, stage);
+	printStageBorder();
+	initStage(circle, stage);
 
-		// loop shoot
+	// loop shoot
 
-		srand(time(NULL));
+	srand(time(NULL));
 
-		while (!isEnd(stage))
+	for (i = 0; i < 10; i++)
+		ballCycle[i] = rand()%4 + '5';
+
+	while (!isEnd(stage))
+	{
+		xPower = 0;
+		printPower(xPower);
+
+		if (ballIdx > 9)
+			ballIdx = 0;
+		stage[startY][startX] = ballCycle[ballIdx++];
+
+		// print current and next ball
+		printCircle(circle, COLS/2 - CIR_SIZE * 8 + CIR_SIZE + startX/2 *CIR_SIZE*2, startY * CIR_SIZE * 2, stage[startY][startX] - '0');
+		printCircle(circle, COLS - CIR_SIZE * 3 , LINES - CIR_SIZE * 3 , ballCycle[ballIdx%10] - '0');
+
+		// choose power
+		input = getch();
+		while (input != KEY_UP)
 		{
-			xPower = 0;
+			if (input == KEY_RIGHT && xPower < 4)
+				xPower++;
+			else if (input == KEY_LEFT && xPower > -4)
+				xPower--;
 			printPower(xPower);
 
-			stage[startY][startX] = rand()%4 + '5';
-			printCircle(circle, COLS/2 - CIR_SIZE * 8 + CIR_SIZE + startX/2 *CIR_SIZE*2, startY * CIR_SIZE * 2, stage[startY][startX] - '0');
-
-			// choose power
 			input = getch();
-			while (input != KEY_UP)
-			{
-				if (input == KEY_RIGHT && xPower < 4)
-					xPower++;
-				else if (input == KEY_LEFT && xPower > -4)
-					xPower--;
-				printPower(xPower);
+		}
 
-				input = getch();
-			}
-			shoot(xPower, circle, stage, &tab);
+		shoot(xPower, circle, stage, &tab);
 
-			if (isOver(stage))
-			{
-				system("say Game Over!");
+		if (isOver(stage))
+		{
+			system("say Game Over!");
 
-				ch = getchar();
-
-				break;
-
-				fp = fopen("best.bin", "wb");
-				buffer[0] = bestStage;
-				buffer[1] = bestScore;
-				fwrite(buffer, sizeof(int), 2, fp);
-				fclose(fp);
-			}
+			return;
 		}
 
 		if (isEnd(stage))
 		{
-			system("say Clear!");
+			system("say You know da wae!");
 
-			stage4();
+			if (bestStage < 3)
+				bestStage = 3;
+
+			return;
 		}
+	}
 }

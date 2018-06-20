@@ -499,6 +499,9 @@ void stage1()
 		{
 			system("say Do you know da wae?");
 
+			if (bestStage < 1)
+				bestStage = 1;
+
 			return;
 		}
 	}
