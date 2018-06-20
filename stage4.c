@@ -91,6 +91,9 @@ void stage4()
 		{
 			system("say Winner Winner Chiken Dinner!");
 
+			if (bestStage < 4)
+				bestStage = 4;
+
 			return;
 		}
 	}

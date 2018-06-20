@@ -91,6 +91,9 @@ void stage3()
 		{
 			system("say You know da wae!");
 
+			if (bestStage < 3)
+				bestStage = 3;
+
 			return;
 		}
 	}

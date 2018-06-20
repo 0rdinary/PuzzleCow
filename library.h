@@ -37,3 +37,4 @@ void stage3();
 void stage4();
 int selectStage();
 void gameOver();
+void Start(int x, int y);
