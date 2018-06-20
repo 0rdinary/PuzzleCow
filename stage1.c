@@ -161,7 +161,11 @@ char smallX[6][5] = { {"10001"},
 				      {"11011"},
 				      {"01110"},
 				      {"00100"},
+<<<<<<< HEAD
 				      {"10101"},
+=======
+				      {"01010"},
+>>>>>>> master_branch
 				      {"10001"} };
 
 char smallT[6][5] = { {"11111"},
@@ -180,6 +184,7 @@ char smallS[6][5] = { {"11111"},
 
 char smallR[6][5] = { {"11111"},
 				      {"10001"},
+<<<<<<< HEAD
 				      {"01110"},
 				      {"00100"},
 				      {"10101"},
@@ -188,6 +193,12 @@ char smallR[6][5] = { {"11111"},
 
 
 				    
+=======
+				      {"11111"},
+				      {"11000"},
+				      {"10110"},
+				      {"10011"} };
+>>>>>>> master_branch
 
 
 void printStageBorder()
@@ -245,6 +256,18 @@ void initStage(char circle[][CIR_MAX], char map[][15])
 	int i, j;
 	char buffer1[10];
 	char buffer2[10];
+<<<<<<< HEAD
+=======
+
+
+	// set score
+	printAlp(smallS, 0, 0);
+	printAlp(smallC, 6, 0);
+	printAlp(smallO, 12, 0);
+	printAlp(smallR, 18, 0);
+	printAlp(smallE, 24, 0);
+	printScore(number0, 31, 0);
+>>>>>>> master_branch
 
 
 	printScore(number0, 0, 0);
@@ -322,6 +345,10 @@ void initStage(char circle[][CIR_MAX], char map[][15])
 			}
 		}
 
+<<<<<<< HEAD
+=======
+	// print mark
+>>>>>>> master_branch
 	printGreenScore(smallP, COLS-36, 0);
 	printGreenScore(smallU, COLS-30, 0);
 	printGreenScore(smallZ, COLS-24, 0);
@@ -332,6 +359,16 @@ void initStage(char circle[][CIR_MAX], char map[][15])
 	printGreenScore(smallC, COLS-18, 8);
 	printGreenScore(smallO, COLS-12, 8);
 	printGreenScore(smallW, COLS-6, 8);
+<<<<<<< HEAD
+=======
+
+	// print next
+	printAlp(smallN, COLS - CIR_SIZE * 3 - 24, LINES-9);
+	printAlp(smallE, COLS - CIR_SIZE * 3 - 18, LINES-9);
+	printAlp(smallX, COLS - CIR_SIZE * 3 - 12, LINES-9);
+	printAlp(smallT, COLS - CIR_SIZE * 3 - 6, LINES-9);
+
+>>>>>>> master_branch
 }
 
 void stage1()
@@ -362,6 +399,7 @@ void stage1()
 
 	char circle[CIR_MAX][CIR_MAX];
 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 	/*
     //for play music 
@@ -422,12 +460,60 @@ void stage1()
 =======
 		shoot(xPower, circle, stage, &tab);
 
+=======
+
+	makeCircle(circle, CIR_SIZE);
+	clear();
+
+	printStageBorder();
+	stage[startY][startX] = rand()%4 + '5';
+	initStage(circle, stage);
+
+	// loop shoot
+
+	srand(time(NULL));
+
+	for (i = 0; i < 10; i++)
+		ballCycle[i] = rand()%4 + '5';
+
+	while (!isEnd(stage))
+	{
+		xPower = 0;
+		printPower(xPower);
+
+		if (ballIdx > 9)
+			ballIdx = 0;
+		stage[startY][startX] = ballCycle[ballIdx++];
+
+		// print current and next ball
+		printCircle(circle, COLS/2 - CIR_SIZE * 8 + CIR_SIZE + startX/2 *CIR_SIZE*2, startY * CIR_SIZE * 2, stage[startY][startX] - '0');
+		printCircle(circle, COLS - CIR_SIZE * 3 , LINES - CIR_SIZE * 3 , ballCycle[ballIdx] - '0');
+
+		// choose power
+		input = getch();
+		while (input != KEY_UP)
+		{
+			if (input == KEY_RIGHT && xPower < 4)
+				xPower++;
+			else if (input == KEY_LEFT && xPower > -4)
+				xPower--;
+			printPower(xPower);
+
+			input = getch();
+		}
+
+		shoot(xPower, circle, stage, &tab);
+
+>>>>>>> master_branch
 		if (isOver(stage))
 		{
 			system("say Game Over!");
 
 			return;
+<<<<<<< HEAD
 >>>>>>> Stashed changes
+=======
+>>>>>>> master_branch
 		}
 
 		if (isEnd(stage))
@@ -441,7 +527,10 @@ void stage1()
 =======
 	}
 	
+<<<<<<< HEAD
 >>>>>>> Stashed changes
+=======
+>>>>>>> master_branch
 }
 
 void shoot(int x, char circle[][CIR_MAX], char map[][15], int *tab)
@@ -863,7 +952,7 @@ void search(char map[][15], int xBall, int yBall, char ball)
 		for (i = 0; i < 7; i++)
 		{
 			attron(COLOR_PAIR(BACK_FAIR));
-			mvhline(i, 0, ' ', 20);
+			mvhline(i, 31, ' ', 18);
 			mvhline(LINES-7+i, 0, ' ', 25);
 			attroff(COLOR_PAIR(BACK_FAIR));
 		}
@@ -873,25 +962,25 @@ void search(char map[][15], int xBall, int yBall, char ball)
 		{
 			switch(buffer[i] - '0')
 			{
-				case 0 : printScore(number0, 6*i, 0);
+				case 0 : printScore(number0, 31 + 6*i, 0);
 						break;
-				case 1 : printScore(number1, 6*i, 0);
+				case 1 : printScore(number1, 31 + 6*i, 0);
 						break;
-				case 2 : printScore(number2, 6*i, 0);
+				case 2 : printScore(number2, 31 + 6*i, 0);
 						break;
-				case 3 : printScore(number3, 6*i, 0);
+				case 3 : printScore(number3, 31 + 6*i, 0);
 						break;
-				case 4 : printScore(number4, 6*i, 0);
+				case 4 : printScore(number4, 31 + 6*i, 0);
 						break;
-				case 5 : printScore(number5, 6*i, 0);
+				case 5 : printScore(number5, 31 + 6*i, 0);
 						break;
-				case 6 : printScore(number6, 6*i, 0);
+				case 6 : printScore(number6, 31 + 6*i, 0);
 						break;
-				case 7 : printScore(number7, 6*i, 0);
+				case 7 : printScore(number7, 31 + 6*i, 0);
 						break;
-				case 8 : printScore(number8, 6*i, 0);
+				case 8 : printScore(number8, 31 + 6*i, 0);
 						break;
-				case 9 : printScore(number9, 6*i, 0);
+				case 9 : printScore(number9, 31 + 6*i, 0);
 						break;
 			}
 		}
@@ -972,8 +1061,11 @@ void printRedScore(char number[][5], int x, int y)
      
 
      refresh();
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
+=======
+>>>>>>> master_branch
 }
 
 void printGreenScore(char number[][5], int x, int y)
@@ -991,5 +1083,25 @@ void printGreenScore(char number[][5], int x, int y)
      
 
      refresh();
+<<<<<<< HEAD
 >>>>>>> Stashed changes
+=======
+}
+
+void printAlp(char number[][5], int x, int y)
+{
+	int i, j;
+
+	for (i = 0; i < 6; i++)
+		for (j = 0; j < 5; j++)
+			if (number[i][j] != '0')
+			{
+				attron(COLOR_PAIR(FBACK_FAIR));
+				mvhline(y + i, x + j, ' ', 1);
+				attroff(COLOR_PAIR(FBACK_FAIR));
+			}
+     
+
+     refresh();
+>>>>>>> master_branch
 }
