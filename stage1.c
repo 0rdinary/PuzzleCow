@@ -100,7 +100,8 @@ void printStageBorder()
 	int y;
 	move(COLS/2 - CIR_SIZE * 8 - 1, 0);
     attron(COLOR_PAIR(FBACK_FAIR));
-    for (y = 0; y <= LINES; y++) {
+    for (y = 0; y <= LINES; y++)
+    {
     
         if (y == CIR_SIZE * 22)
         {
@@ -132,6 +133,16 @@ void printScore(char number[][5], int x, int y)
      
 
      refresh();
+}
+
+void deleteScore(int x, int y)
+{
+	int i, j;
+
+	attron(COLOR_PAIR(BACK_FAIR));
+	for (int i = 0; i < 7; i++)
+		mvhline(y + i, x, ' ', 5);
+	attroff(COLOR_PAIR(BACK_FAIR));
 }
 
 void initStage(char circle[][CIR_MAX], char map[][15])
@@ -756,5 +767,21 @@ void search(char map[][15], int xBall, int yBall, char ball)
 		}
 
 	}
-	
+}
+
+void printRedScore(char number[][5], int x, int y)
+{
+	int i, j;
+
+	for (i = 0; i < 7; i++)
+		for (j = 0; j < 5; j++)
+			if (number[i][j] != '0')
+			{
+				attron(COLOR_PAIR(BALL1));
+				mvhline(y + i, x + j, ' ', 1);
+				attroff(COLOR_PAIR(BALL1));
+			}
+     
+
+     refresh();
 }

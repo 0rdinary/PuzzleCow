@@ -16,9 +16,21 @@ int bestStage = 0;
 int bestScore = 0;
 int score = 0;
 
+extern char number0[7][5];
+extern char number1[7][5];
+extern char number2[7][5];
+extern char number3[7][5];
+extern char number4[7][5];
+extern char number5[7][5];
+extern char number6[7][5];
+extern char number7[7][5];
+extern char number8[7][5];
+extern char number9[7][5];
+
 void mainMenu();
 void printAlphabet(char alphabet[][WORD_SIZE], int x, int y);
 void printBox();
+int selectStage();
 
 int main()
 {
@@ -26,7 +38,7 @@ int main()
     int buffer[2];    // store best Score
 
     //initialization
-    char userInput;
+    char userInput = '0';
     initscr();
     mainMenu();
 
@@ -41,18 +53,19 @@ int main()
     }
 
     fflush(stdin);
-    userInput = getchar();
+
+    selectStage();
     while (userInput != 'q')
     {
         switch(userInput)
         {
             case '1' : stage1();
                         break;
-            case '2' : stage2();
+            case '2' : if (bestStage > 0) stage2();
                         break;
-            case '3' : stage3();
+            case '3' : if (bestStage > 1) stage3();
                         break;
-            case '4' : stage4();
+            case '4' : if (bestStage > 2) stage4();
                         break;
         }
 
@@ -236,4 +249,166 @@ void printBox()
     }
     attroff(COLOR_PAIR(BOX_FAIR));
     refresh();
+}
+
+int selectStage()
+{
+    int input = 0;
+    int cur = 1;
+
+    bestStage = 3;
+
+    printRedScore(number1, COLS/2 - 30, LINES - 10);
+
+    if (bestStage > 0)
+        printScore(number2, COLS/2 - 10, LINES - 10);
+
+    if (bestStage > 1)
+        printScore(number3, COLS/2 + 10, LINES - 10);
+
+    if (bestStage > 2)
+        printScore(number4, COLS/2 + 30, LINES - 10);
+
+
+    while (input != KEY_UP)
+    {
+        if (input == KEY_LEFT && cur != 1)
+        {
+            cur--;
+
+            if (bestStage > 2)
+            {
+                deleteScore(COLS/2 - 30, LINES-10);
+                deleteScore(COLS/2 - 10, LINES-10);
+                deleteScore(COLS/2 + 10, LINES-10);
+                deleteScore(COLS/2 + 30, LINES-10);
+
+                if (cur == 1)
+                {
+                    printRedScore(number1, COLS/2 - 30, LINES-10);
+                    printScore(number2, COLS/2 - 10, LINES - 10);
+                    printScore(number3, COLS/2 + 10, LINES - 10);
+                    printScore(number4, COLS/2 + 30, LINES-10);
+                }
+
+                else if (cur == 2)
+                {
+                    printScore(number1, COLS/2 - 30, LINES-10);
+                    printRedScore(number2, COLS/2 - 10, LINES - 10);
+                    printScore(number3, COLS/2 + 10, LINES - 10);
+                    printScore(number4, COLS/2 + 30, LINES-10);
+                }
+
+                else if (cur == 3)
+                {
+                    printScore(number1, COLS/2 - 30, LINES-10);
+                    printScore(number2, COLS/2 - 10, LINES - 10);
+                    printRedScore(number3, COLS/2 + 10, LINES - 10);
+                    printScore(number4, COLS/2 + 30, LINES-10);
+                }
+            }
+
+            else if (bestStage > 1)
+            {
+                deleteScore(COLS/2 - 30, LINES-10);
+                deleteScore(COLS/2 - 10, LINES-10);
+                deleteScore(COLS/2 + 10, LINES-10);
+
+                if (cur == 1)
+                {
+                    printRedScore(number1, COLS/2 - 30, LINES-10);
+                    printScore(number2, COLS/2 - 10, LINES - 10);
+                    printScore(number3, COLS/2 + 10, LINES - 10);
+                }
+
+                else if (cur == 2)
+                {
+                    printScore(number1, COLS/2 - 30, LINES-10);
+                    printRedScore(number2, COLS/2 - 10, LINES - 10);
+                    printScore(number3, COLS/2 + 10, LINES - 10);
+                }
+            }
+
+            else if (bestStage > 0)
+            {
+                deleteScore(COLS/2 - 30, LINES-10);
+                deleteScore(COLS/2 - 10, LINES-10);
+
+                if (cur == 1)
+                {
+                    printRedScore(number1, COLS/2 - 30, LINES-10);
+                    printScore(number2, COLS/2 - 10, LINES - 10);
+                }
+            }
+        }
+
+        else if (input == KEY_RIGHT && cur != bestStage+1)
+        {
+            cur++;
+            deleteScore(COLS/2 - 30, LINES-10);
+            deleteScore(COLS/2 - 10, LINES-10);
+            deleteScore(COLS/2 + 10, LINES-10);
+            deleteScore(COLS/2 + 30, LINES-10);
+
+            if (bestStage > 2)
+            {
+
+                if (cur == 2)
+                {
+                    printScore(number1, COLS/2 - 30, LINES-10);
+                    printRedScore(number2, COLS/2 - 10, LINES - 10);
+                    printScore(number3, COLS/2 + 10, LINES - 10);
+                    printScore(number4, COLS/2 + 30, LINES-10);
+                }
+
+                else if (cur == 3)
+                {
+                    printScore(number1, COLS/2 - 30, LINES-10);
+                    printScore(number2, COLS/2 - 10, LINES - 10);
+                    printRedScore(number3, COLS/2 + 10, LINES - 10);
+                    printScore(number4, COLS/2 + 30, LINES-10);
+                }
+
+                else if (cur == 4)
+                {
+                    printScore(number1, COLS/2 - 30, LINES-10);
+                    printScore(number2, COLS/2 - 10, LINES - 10);
+                    printScore(number3, COLS/2 + 10, LINES - 10);
+                    printRedScore(number4, COLS/2 + 30, LINES-10);
+                }
+            }
+
+            if (bestStage > 1)
+            {
+
+                if (cur == 2)
+                {
+                    printScore(number1, COLS/2 - 30, LINES-10);
+                    printRedScore(number2, COLS/2 - 10, LINES - 10);
+                    printScore(number3, COLS/2 + 10, LINES - 10);
+                }
+
+                else if (cur == 3)
+                {
+                    printScore(number1, COLS/2 - 30, LINES-10);
+                    printScore(number2, COLS/2 - 10, LINES - 10);
+                    printRedScore(number3, COLS/2 + 10, LINES - 10);
+                }
+            }
+
+            if (bestStage > 0)
+            {
+
+                if (cur == 2)
+                {
+                    printScore(number1, COLS/2 - 30, LINES-10);
+                    printRedScore(number2, COLS/2 - 10, LINES - 10);
+                }
+            }
+
+        }
+        input = getch();
+    }
+
+    return cur;
 }
